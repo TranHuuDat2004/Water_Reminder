@@ -3,22 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
-    <!-- Tiêu đề -->
-
-
-    <!-- Biểu đồ cột -->
-
+    <!-- Tiêu đề "Water Consumption" và bộ chọn ngày -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/rounded_corners_blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/titleText"
@@ -39,67 +34,67 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dateSelectorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:weightSum="3">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/buttonPrev"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:text="<"
             android:backgroundTint="#00AEEF"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
-            app:layout_constraintHorizontal_bias="0.076"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="16dp" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/dateRangeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="19/03 - 25/03 "
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toEndOf="@+id/button3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/buttonPrev"
+            app:layout_constraintEnd_toStartOf="@id/buttonNext" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonNext"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:text=">"
             android:backgroundTint="#00AEEF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.946"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="16dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Biểu đồ cột -->
     <LinearLayout
         android:id="@+id/barChartContainer"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/rounded_corners"
         android:gravity="bottom"
         android:orientation="horizontal"
+        android:padding="16dp"
         android:weightSum="7"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateSelectorLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
-        <!-- Cột thứ 1 -->
+        <!-- Các cột biểu đồ (đã có) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -134,7 +129,6 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Cột thứ 2 -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -169,7 +163,6 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Cột thứ 3 -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -204,7 +197,6 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Cột thứ 4 -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -239,7 +231,6 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Cột thứ 5 -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -274,7 +265,6 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Cột thứ 6 -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -309,7 +299,6 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Cột thứ 7 -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -345,18 +334,187 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Goal Preview Section -->
+    <TextView
+        android:id="@+id/goalPreviewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Goal Preview"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barChartContainer" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        
+        android:id="@+id/goalPreviewContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/goalPreviewTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
+
+        <!-- Biểu đồ tròn (placeholder) -->
+        <FrameLayout
+            android:id="@+id/circularProgressBar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/circle_progress_placeholder"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100%"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/circularProgressBar"
+            app:layout_constraintStart_toStartOf="@id/circularProgressBar"
+            app:layout_constraintEnd_toEndOf="@id/circularProgressBar"
+            app:layout_constraintBottom_toBottomOf="@id/circularProgressBar" />
+
+        <!-- Athlete Performance Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/athletePerformanceCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="#F1F8E9"
+            android:padding="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/circularProgressBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Athlete"
+                        android:textSize="14sp"
+                        android:textColor="#757575" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Performance"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#212121" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+100%"
+                        android:textSize="14sp"
+                        android:textColor="#4CAF50" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_athlete"
+                android:contentDescription="Athlete Icon" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Cognitive Performance Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cognitivePerformanceCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="#F1F8E9"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/athletePerformanceCard"
+            app:layout_constraintStart_toEndOf="@id/circularProgressBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cognitive"
+                        android:textSize="14sp"
+                        android:textColor="#757575" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Performance"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#212121" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+100%"
+                        android:textSize="14sp"
+                        android:textColor="#4CAF50" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_cognitive"
+                android:contentDescription="Cognitive Icon" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/rounded_corners"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/navi_bottom"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
         android:weightSum="5"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
 
         <LinearLayout
@@ -366,9 +524,11 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+            <ImageButton
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_home" />
 
             <TextView
@@ -376,27 +536,7 @@
                 android:layout_height="wrap_content"
                 android:text="Home"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_progress" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Progress"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -407,18 +547,18 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/rounded_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
-                android:src="@drawable/ic_add" />
+                android:src="@drawable/ic_progress" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add"
+                android:text="Progress"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -428,9 +568,33 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+            <ImageButton
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="#29B6F6"
+                android:src="@drawable/water_full_24px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_rewards" />
 
             <TextView
@@ -438,7 +602,7 @@
                 android:layout_height="wrap_content"
                 android:text="Rewards"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -448,9 +612,11 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+            <ImageButton
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_settings" />
 
             <TextView
@@ -458,7 +624,9 @@
                 android:layout_height="wrap_content"
                 android:text="Settings"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="12sp" />
+                android:textSize="14dp" />
         </LinearLayout>
     </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

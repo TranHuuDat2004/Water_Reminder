@@ -6,8 +6,8 @@
     android:background="#FFFFFF"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    tools:context=".MainActivity">
+    android:paddingTop="16dp">
+
 
     <TextView
         android:id="@+id/today_date"

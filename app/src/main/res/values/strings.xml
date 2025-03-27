@@ -1,3 +1,61 @@
 <resources>
-    <string name="app_name">Canvas</string>
+    <string name="app_name">YourAppName</string>
+    <string name="login">Login</string>
+    <string name="Signup">Sign Up</string>
+    <string name="securely_login">Securely login to your account</string>
+    <string name="email_address">Emulodavid@gmail.com</string>
+    <string name="username">Username</string>
+    <string name="phone_number">Phone</string>
+    <string name="password">Test2023</string>
+    <string name="remember_me">Remember me</string>
+    <string name="log_in">Log In</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="or_continue_with">- OR Continue with -</string>
+    <string name="google">Google</string>
+    <string name="facebook">Facebook</string>
+    <string name="create_an_account">Create An Account</string>
+    <string name="have_an_account">Have An Account</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="close">Close</string>
+    <string name="email_icon">Email Icon</string>
+    <string name="password_icon">Password Icon</string>
+    <string name="toggle_password">Toggle Password Visibility</string>
+    <string name="terms_and_privacy">By clicking Continue \n You agree to our Terms of Service and Privacy Policy</string>
+
+    <string name="water">Water</string>
+    <string name="add_a_water">Add a water!</string>
+    <string name="tea">Tea</string>
+    <string name="add_a_tea">Add a tea!</string>
+    <string name="coffee">Coffee</string>
+    <string name="add_a_coffee">Add a coffee!</string>
+    <string name="juice">Juice</string>
+    <string name="add_a_juice">Add a juice!</string>
+
+    <string name="calories">Calories</string>
+    <string name="kcol">510.43 kcol!</string>
+    <string name="walk">Walk</string>
+    <string name="steps">1052 steps</string>
+    <string name="sleep">Sleep</string>
+    <string name="hours">08:00 hours</string>
+    <string name="heart">Heart</string>
+    <string name="bpm">105 bpm</string>
+
+    <string name="close_button_description">Close</string>
+    <string name="profile_image_description">Profile Image</string>
+    <string name="home_button_description">Home</string>
+    <string name="progress_button_description">Progress</string>
+    <string name="water_button_description">Water</string>
+    <string name="rewards_button_description">Rewards</string>
+    <string name="settings_button_description">Settings</string>
+
+
+    <string name="water_stats">Water Statistics</string>
+    <string name="heart_rate">Heart Rate Monitor</string>
+    <string name="home">Home</string>
+    <string name="analysis">Analysis</string>
+    <string name="clock">Clock</string>
+    <string name="settings">Settings</string>
+    <string name="profile">Profile</string>
 </resources>

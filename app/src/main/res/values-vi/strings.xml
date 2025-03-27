@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">Ứng Dụng Của Bạn</string>
+    <string name="login">Đăng nhập</string>
+    <string name="Signup">Đăng ký</string>
+    <string name="securely_login">Đăng nhập an toàn vào tài khoản của bạn</string>
+    <string name="email_address">Emulodavid@gmail.com</string>
+    <string name="username">Tên người dùng</string>
+    <string name="phone_number">Số điện thoại</string>
+    <string name="password">Test2023</string>
+    <string name="remember_me">Ghi nhớ đăng nhập</string>
+    <string name="log_in">Đăng nhập</string>
+    <string name="forgot_password">Quên mật khẩu</string>
+    <string name="or_continue_with">- HOẶC Tiếp tục với -</string>
+    <string name="google">Google</string>
+    <string name="facebook">Facebook</string>
+    <string name="create_an_account">Tạo tài khoản</string>
+    <string name="have_an_account">Đã có tài khoản</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="terms_of_service">Điều khoản dịch vụ</string>
+    <string name="privacy_policy">Chính sách bảo mật</string>
+    <string name="close">Đóng</string>
+    <string name="email_icon">Biểu tượng Email</string>
+    <string name="password_icon">Biểu tượng Mật khẩu</string>
+    <string name="toggle_password">Hiển thị/Ẩn mật khẩu</string>
+    <string name="terms_and_privacy">Bằng cách nhấn Tiếp tục \n Bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của chúng tôi</string>
+
+    <string name="water">Nước</string>
+    <string name="add_a_water">Thêm nước!</string>
+    <string name="tea">Trà</string>
+    <string name="add_a_tea">Thêm trà!</string>
+    <string name="coffee">Cà phê</string>
+    <string name="add_a_coffee">Thêm cà phê!</string>
+    <string name="juice">Nước ép</string>
+    <string name="add_a_juice">Thêm nước ép!</string>
+
+
+    <string name="calories">Calo</string>
+    <string name="kcol">510.43 calo!</string>
+    <string name="walk">Đi bộ</string>
+    <string name="steps">1052 bước</string>
+    <string name="sleep">Giấc ngủ</string>
+    <string name="hours">08:00 giờ</string>
+    <string name="heart"> Nhịp Tim</string>
+    <string name="bpm">105 nhịp/phút</string>
+
+    <string name="close_button_description">Đóng</string>
+    <string name="profile_image_description">Ảnh hồ sơ</string>
+    <string name="home_button_description">Trang chủ</string>
+    <string name="progress_button_description">Tiến trình</string>
+    <string name="water_button_description">Nước</string>
+    <string name="rewards_button_description">Phần thưởng</string>
+    <string name="settings_button_description">Cài đặt</string>
+
+    <string name="water_stats">Thống kê lượng nước</string>
+    <string name="heart_rate">Theo dõi nhịp tim</string>
+    <string name="home">Trang chủ</string>
+    <string name="analysis">Phân tích</string>
+    <string name="clock">Đồng hồ</string>
+    <string name="settings">Cài đặt</string>
+    <string name="profile">Hồ sơ</string>
+
+</resources>
