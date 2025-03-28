@@ -58,4 +58,53 @@
     <string name="clock">Clock</string>
     <string name="settings">Settings</string>
     <string name="profile">Profile</string>
+
+    <string name="back">Back</string>
+    <string name="profile_setup_title">Select your age, weight, gender and height</string>
+    <string name="gender_title">What is your gender</string>
+    <string name="age_title">How old are you</string>
+    <string name="weight_title">What is your weight (in kg)</string>
+    <string name="height_title">What is your height (in cm)</string>
+    <string name="wake_up_time">Wake up time</string>
+    <string name="sleeping_time">Sleeping time</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="_09_41">09 : 41</string>
+    <string name="_10_41">10 : 41</string>
+
+
+    <string name="history">History</string>
+    <string name="setting">Setting</string>
+    <string name="reminder_settings">Reminder Settings</string>
+    <string name="general">General</string>
+    <string name="reminder_sound">Reminder Sound</string>
+    <string name="reminder_mode">Reminder Mode</string>
+    <string name="as_device_settings">As device settings</string>
+    <string name="remove_ads">Remove ADS</string>
+    <string name="light_or_dark_interface">Light or dark interface</string>
+    <string name="light">Light</string>
+    <string name="unit">Unit</string>
+    <string name="kg_ml">Kg, ml</string>
+    <string name="intake_goal">Intake goal</string>
+    <string name="_2000ml">2000 ml</string>
+
+
+
+    <string name="weekly_completion">Weekly Completion</string>
+    <string name="drink_water_report">Drink Water Report</string>
+    <string name="weekly_average">Weekly Average: 0 ml / Day</string>
+    <string name="monthly_average">Monthly Average: 0 ml / Day</string>
+    <string name="average_completion">Average Completion: 0%</string>
+    <string name="drink_frequency">Drink Frequency: 0 times / Day</string>
+    <string name="sun">Sun</string>
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="completed">Completed</string>
 </resources>

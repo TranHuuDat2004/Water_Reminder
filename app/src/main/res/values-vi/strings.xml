@@ -59,4 +59,52 @@
     <string name="settings">Cài đặt</string>
     <string name="profile">Hồ sơ</string>
 
+
+    <string name="back">Quay lại</string>
+    <string name="profile_setup_title">Chọn tuổi, cân nặng, giới tính và chiều cao của bạn</string>
+    <string name="gender_title">Giới tính của bạn là gì</string>
+    <string name="age_title">Bạn bao nhiêu tuổi</string>
+    <string name="weight_title">Cân nặng của bạn (tính bằng kg)</string>
+    <string name="height_title">Chiều cao của bạn (tính bằng cm)</string>
+    <string name="wake_up_time">Thời gian thức dậy</string>
+    <string name="sleeping_time">Thời gian đi ngủ</string>
+    <string name="skip">Bỏ qua</string>
+    <string name="next">Tiếp theo</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
+    <string name="other">Khác</string>
+    <string name="_09_41">09 : 41</string>
+    <string name="_10_41">10 : 41</string>
+
+
+    <string name="history">Lịch sử</string>
+    <string name="setting">Cài đặt</string>
+    <string name="reminder_settings">Cài đặt nhắc nhở</string>
+    <string name="general">Chung</string>
+    <string name="reminder_sound">Âm thanh nhắc nhở</string>
+    <string name="reminder_mode">Chế độ nhắc nhở</string>
+    <string name="as_device_settings">Theo cài đặt thiết bị</string>
+    <string name="remove_ads">Gỡ bỏ quảng cáo</string>
+    <string name="light_or_dark_interface">Giao diện sáng hoặc tối</string>
+    <string name="light">Sáng</string>
+    <string name="unit">Đơn vị</string>
+    <string name="kg_ml">Kg, ml</string>
+    <string name="intake_goal">Mục tiêu lượng nước</string>
+    <string name="_2000ml">2000 ml</string>
+
+
+    <string name="weekly_completion">Hoàn thành hàng tuần</string>
+    <string name="drink_water_report">Báo cáo uống nước</string>
+    <string name="weekly_average">Trung bình hàng tuần: 0 ml / Ngày</string>
+    <string name="monthly_average">Trung bình hàng tháng: 0 ml / Ngày</string>
+    <string name="average_completion">Mức hoàn thành trung bình: 0%</string>
+    <string name="drink_frequency">Tần suất uống: 0 lần / Ngày</string>
+    <string name="sun">Chủ Nhật</string>
+    <string name="mon">Thứ Hai</string>
+    <string name="tue">Thứ Ba</string>
+    <string name="wed">Thứ Tư</string>
+    <string name="thu">Thứ Năm</string>
+    <string name="fri">Thứ Sáu</string>
+    <string name="sat">Thứ Bảy</string>
+    <string name="completed">Hoàn thành</string>
 </resources>
