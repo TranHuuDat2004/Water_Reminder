@@ -144,7 +144,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="4dp"
+            >
 
             <RadioButton
                 android:id="@+id/radioButtonMale"
@@ -200,8 +201,8 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_home"
@@ -212,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:text="Home"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -223,8 +224,8 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_progress"
@@ -235,7 +236,7 @@
                 android:layout_height="wrap_content"
                 android:text="Progress"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -246,8 +247,8 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
                 android:src="@drawable/water_full_24px"
@@ -258,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:text="Type"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -269,8 +270,8 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_rewards"
@@ -281,7 +282,7 @@
                 android:layout_height="wrap_content"
                 android:text="Rewards"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -292,8 +293,8 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_settings"
@@ -304,7 +305,7 @@
                 android:layout_height="wrap_content"
                 android:text="Settings"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
     </LinearLayout>
 

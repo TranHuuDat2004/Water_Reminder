@@ -64,14 +64,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="First Name"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_input"
-            android:padding="8dp"
+            android:padding="16dp"
             android:text="Aashifa"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"/>
@@ -80,14 +80,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Last Name"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_input"
-            android:padding="8dp"
+            android:padding="16dp"
             android:text="Sheikh"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"/>
@@ -96,14 +96,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email Address"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_input"
-            android:padding="8dp"
+            android:padding="16dp"
             android:text="aashifasheikh@gmail.com"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"/>
@@ -112,14 +112,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Age"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_input"
-            android:padding="8dp"
+            android:padding="16dp"
             android:text="25"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"/>
@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gender"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"/>
 
         <RadioGroup
@@ -166,7 +166,7 @@
         android:background="@drawable/navi_bottom"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
+        android:paddingVertical="16dp"
         android:weightSum="5">
 
 
@@ -178,8 +178,8 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_home" />
@@ -189,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:text="Home"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -200,8 +200,8 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_progress" />
@@ -211,7 +211,7 @@
                 android:layout_height="wrap_content"
                 android:text="Progress"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -222,8 +222,8 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
                 android:src="@drawable/water_full_24px" />
@@ -233,7 +233,7 @@
                 android:layout_height="wrap_content"
                 android:text="Type"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -244,8 +244,8 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_rewards" />
@@ -255,7 +255,7 @@
                 android:layout_height="wrap_content"
                 android:text="Rewards"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -266,8 +266,8 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:backgroundTint="#29B6F6"
                 android:src="@drawable/ic_settings" />
@@ -277,7 +277,7 @@
                 android:layout_height="wrap_content"
                 android:text="Settings"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="16dp" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

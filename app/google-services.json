@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "951789212686",
+    "project_id": "waterreminder2004",
+    "storage_bucket": "waterreminder2004.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951789212686:android:605fdad757b6700990d85f",
+        "android_client_info": {
+          "package_name": "com.example.canvas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKjQKItfNiGPqyZOztsK9SK3c0ljoA3OU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951789212686:android:44def7f463073de890d85f",
+        "android_client_info": {
+          "package_name": "com.example.water"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKjQKItfNiGPqyZOztsK9SK3c0ljoA3OU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

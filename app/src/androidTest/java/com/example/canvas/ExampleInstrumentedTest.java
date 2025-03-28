@@ -1,4 +1,4 @@
-package com.example.water;
+package com.example.canvas;
 
 import android.content.Context;
 
