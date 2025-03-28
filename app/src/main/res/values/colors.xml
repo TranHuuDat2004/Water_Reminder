@@ -8,10 +8,26 @@
 
     <color name="white">#FFFFFFFF</color>
         <color name="black">#000000</color>
-        <color name="red">#FF0000</color>
+        <color name="red1">#FF0000</color>
         <color name="blue">#0000FF</color>
         <color name="yellow">#FFFF00</color>
-    <color name="green">#00FF00</color> <!-- Xanh lá -->
-    <color name="pink">#FF69B4</color> <!-- Hồng -->
+    <color name="green1">#00FF00</color> <!-- Xanh lá -->
+    <color name="pink1">#FF69B4</color> <!-- Hồng -->
+
+
+    <color name="pink">#FF69B4</color>
+    <color name="purple">#800080</color>
+    <color name="green">#008000</color>
+    <color name="light_gray">#D3D3D3</color>
+
+
+    <color name="light_blue">#87CEEB</color>
+    <color name="gray">#808080</color>
+
+    <color name="light_blue_translucent">#3087CEEB</color> <!-- 30% opacity light blue -->
+
+
+    <color name="orange">#FF9800</color>
+    <color name="red">#F44336</color>
 
 </resources>
