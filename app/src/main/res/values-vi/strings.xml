@@ -107,4 +107,27 @@
     <string name="fri">Thứ Sáu</string>
     <string name="sat">Thứ Bảy</string>
     <string name="completed">Hoàn thành</string>
+
+    <string name="you_are_verified">Bạn đã được xác minh</string>
+    <string name="congratulations_and_proceed">Chúc mừng bạn! Bạn đã được xác minh. Vui lòng tiếp tục đăng nhập</string>
+    <string name="continue_button">Tiếp tục</string>
+
+
+    <string name="resend_code">Gửi lại mã</string>
+    <string name="didnt_receive">Chưa nhận được\n</string>
+    <string name="verification_code_title">Mã xác minh</string>
+    <string name="verification_code_description">Chúng tôi đã gửi cho bạn một mã gồm 4 chữ số đến địa chỉ email của bạn.\nVui lòng kiểm tra và nhập mã</string>
+    <string name="verify_button">Xác minh</string>
+
+    <string name="good_morning">Chào buổi sáng,</string>
+    <string name="user_name">Aashifa Sheikh</string>
+    <string name="notification">Thông báo</string>
+    <string name="add_your_goal">Thêm mục tiêu của bạn</string>
+    <string name="water_drop">Giọt nước</string>
+    <string name="go_to_dashboard">Đi tới bảng điều khiển</string>
+    <string name="progress_text">Bạn đã đạt được 50% mục tiêu hôm nay, hãy tiếp tục chú ý đến sức khỏe của bạn!</string>
+
+    <string name="alarm">Báo thức</string>
+    <string name="hot_cup">Cốc nóng</string>
+
 </resources>

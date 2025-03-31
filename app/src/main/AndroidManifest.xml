@@ -17,6 +17,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false">  <!-- Adjust exported as needed -->
+        </activity>
+
+        <activity android:name=".Started1Activity"
+            android:exported="false"/>
+        <activity android:name=".Started2Activity"
+            android:exported="false"/>
+        <activity android:name=".Started3Activity"
+            android:exported="false"/>
+        <activity android:name=".StatusActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
