@@ -1,5 +1,6 @@
 package com.example.canvas;
 
+import com.example.canvas.models.User;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -186,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
             });
   }
   private void writeNewUser(String userId, String name, String email, String phone) {
-    com.example.canvas.User user = new com.example.canvas.User(name, email, phone);
+    User user = new User(name, email, phone);
 
     mDatabase.child("users").child(userId).setValue(user)
             .addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -93,11 +93,13 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                   // Login successful
                   FirebaseUser user = mAuth.getCurrentUser();
-                  Toast.makeText(LoginActivity.this, "Login successful.",
+                  String userId = user.getUid(); // Get the user ID here
+                  Toast.makeText(LoginActivity.this, "Login successful. User ID: " + userId,
                           Toast.LENGTH_SHORT).show();
 
                   // Navigate to Started1Activity after successful login
                   Intent intent = new Intent(LoginActivity.this, Started1Activity.class);
+                  intent.putExtra("userId", userId); // Pass the user ID to Started1Activity
                   startActivity(intent);
                   finish();
 
@@ -109,4 +111,5 @@ public class LoginActivity extends AppCompatActivity {
               }
             });
   }
+
 }

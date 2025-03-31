@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sleepTextView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f5f5f5">
@@ -113,6 +114,7 @@
         app:layout_constraintTop_toBottomOf="@+id/progressContainer">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tvWater"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp">
@@ -145,7 +147,8 @@
                 android:id="@+id/barrier"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="recordTitle,addButton" />
+                app:constraint_referenced_ids="recordTitle,addButton"
+                tools:ignore="MissingConstraints" />
 
             <ImageView
                 android:id="@+id/clockIcon"
@@ -232,7 +235,7 @@
 
             <!-- Ô Water -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardWater"
+                android:id="@+id/tvWalkCard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -241,6 +244,7 @@
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout
+                    android:id="@+id/tvWalk"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -264,6 +268,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/walkTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/steps"
@@ -285,6 +290,7 @@
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout
+                    android:id="@+id/tvCalo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -308,6 +314,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/caloTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/kcol"
@@ -337,6 +344,7 @@
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout
+                    android:id="@+id/tvSleep"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -381,6 +389,7 @@
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout
+                    android:id="@+id/tvHeart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -404,6 +413,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/heartTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/bpm"

@@ -18,6 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.Timestamp;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -88,23 +93,45 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Registration success
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(SignupActivity.this, "Registration successful.",
-                                    Toast.LENGTH_SHORT).show();
+                            if (user != null) {
+                                String userId = user.getUid(); // Lấy userId từ Firebase Auth
 
-                            // Navigate to LoginActivity after successful registration
-                            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish(); // Optional: Close SignupActivity
-
+                                // Lưu thông tin lên Firestore
+                                saveUserToFirestore(userId, username, email, phone);
+                            }
                         } else {
-                            // Registration failed
                             Toast.makeText(SignupActivity.this, "Registration failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                             Log.e("SignupActivity", "Registration failed", task.getException());
                         }
                     }
+                });
+    }
+
+    private void saveUserToFirestore(String userId, String username, String email, String phone) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("username", username);
+        userData.put("email", email);
+        userData.put("phoneNumber", phone);
+        userData.put("registrationDate", Timestamp.now()); // Ngày đăng ký là hôm nay
+        userData.put("walk", 0);
+        userData.put("calories", 0);
+        userData.put("sleep", 0);
+        userData.put("heart", 0);
+
+        db.collection("users").document(userId)
+                .set(userData)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(SignupActivity.this, "User registered successfully!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(SignupActivity.this, "Failed to save user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Firestore", "Error saving user data", e);
                 });
     }
 }
