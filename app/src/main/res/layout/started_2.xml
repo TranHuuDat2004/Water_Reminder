@@ -81,7 +81,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/nextButton"
+        android:id="@+id/btnNext"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -127,6 +127,14 @@
 
     </LinearLayout>
 
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp" />
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"

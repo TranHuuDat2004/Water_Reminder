@@ -107,4 +107,22 @@
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
     <string name="completed">Completed</string>
+    <string name="you_are_verified">You are Verified</string>
+    <string name="congratulations_and_proceed">Congratulations to you. You are now Verified! Kindly proceed to log in</string>
+    <string name="continue_button">Continue</string>
+    <string name="resend_code">Resend code</string>
+    <string name="didnt_receive">Didn\'t receive\n</string>
+    <string name="verification_code_title">Verification Code</string>
+    <string name="verification_code_description">We sent you a 4 digit code to your email address. \nplease check  enter your code</string>
+    <string name="verify_button">Verify</string>
+
+    <string name="good_morning">Good Morning,</string>
+    <string name="user_name">Aashifa Sheikh</string>
+    <string name="notification">Notification</string>
+    <string name="add_your_goal">Add Your Goal</string>
+    <string name="water_drop">Water Drop</string>
+    <string name="go_to_dashboard">Go To Dashboard</string>
+    <string name="progress_text">You got 50% of today\'s goal, keep focus on your health!</string>
+    <string name="alarm">Alarm</string>
+    <string name="hot_cup">Hot Cup</string>
 </resources>
