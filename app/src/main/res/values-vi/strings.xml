@@ -130,4 +130,13 @@
     <string name="alarm">Báo thức</string>
     <string name="hot_cup">Cốc nóng</string>
 
+    <string name="language">Ngôn ngữ</string>
+    <string name="language_value_placeholder">Tiếng Việt</string> <!-- Hoặc ngôn ngữ mặc định -->
+
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_progress">Tiến trình</string>
+    <string name="nav_type">Loại</string>
+    <string name="nav_rewards">Phần thưởng</string>
+    <string name="nav_settings">Cài đặt</string>
+
 </resources>
