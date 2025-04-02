@@ -502,21 +502,21 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottomNav"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/navi_bottom"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
         android:weightSum="5"
+        android:padding="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-
+        <!-- Item 1: Home -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -524,21 +524,23 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/ic_home" />
-
-            <TextView
+            <Button
+                android:id="@+id/navHomeButton"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Home"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/ic_home"
+                android:drawablePadding="4dp"
+                android:text="@string/nav_home"
+                android:textAllCaps="false"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="12sp"
+                android:drawableTint="@android:color/holo_blue_dark" />
+
         </LinearLayout>
 
+        <!-- Item 2: Progress -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -546,21 +548,23 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/ic_progress" />
-
-            <TextView
+            <Button
+                android:id="@+id/navProgressButton"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Progress"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/ic_progress"
+                android:drawablePadding="4dp"
+                android:text="@string/nav_progress"
+                android:textAllCaps="false"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="12sp"
+                android:drawableTint="@android:color/holo_blue_dark" />
+
         </LinearLayout>
 
+        <!-- Item 3: Type -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -568,21 +572,23 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/water_full_24px" />
-
-            <TextView
+            <Button
+                android:id="@+id/navTypeButton"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/water_full_24px"
+                android:drawablePadding="4dp"
+                android:text="@string/nav_type"
+                android:textAllCaps="false"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="12sp"
+                android:drawableTint="@android:color/holo_blue_dark" />
+
         </LinearLayout>
 
+        <!-- Item 4: Rewards -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -590,21 +596,23 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/ic_rewards" />
-
-            <TextView
+            <Button
+                android:id="@+id/navRewardsButton"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rewards"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/ic_rewards"
+                android:drawablePadding="4dp"
+                android:text="@string/nav_rewards"
+                android:textAllCaps="false"
                 android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:textSize="12sp"
+                android:drawableTint="@android:color/holo_blue_dark" />
+
         </LinearLayout>
 
+        <!-- Item 5: Settings -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -612,19 +620,20 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/ic_settings" />
-
-            <TextView
+            <Button
+                android:id="@+id/navSettingsButton"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Settings"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/ic_settings"
+                android:drawablePadding="4dp"
+                android:text="@string/nav_settings"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:drawableTint="@android:color/black"/>
+
         </LinearLayout>
     </LinearLayout>
 

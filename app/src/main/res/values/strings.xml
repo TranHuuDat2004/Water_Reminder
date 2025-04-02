@@ -75,7 +75,6 @@
     <string name="_09_41">09 : 41</string>
     <string name="_10_41">10 : 41</string>
 
-
     <string name="history">History</string>
     <string name="setting">Setting</string>
     <string name="reminder_settings">Reminder Settings</string>
@@ -125,4 +124,13 @@
     <string name="progress_text">You got 50% of today\'s goal, keep focus on your health!</string>
     <string name="alarm">Alarm</string>
     <string name="hot_cup">Hot Cup</string>
+
+    <string name="language">Language</string>
+    <string name="language_value_placeholder">English</string> <!-- Hoặc ngôn ngữ mặc định -->
+
+    <string name="nav_home">Home</string>
+    <string name="nav_progress">Progress</string>
+    <string name="nav_type">Type</string>
+    <string name="nav_rewards">Reward</string>
+    <string name="nav_settings">Setting</string>
 </resources>

@@ -8,25 +8,47 @@
     android:padding="16dp"
     tools:context=".ProfileSetupActivity">
 
-    <!-- Back Button -->
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/back"
-        android:padding="8dp"
-        android:src="@drawable/ic_close"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/light_blue" />
+    <!-- Top Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/topNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/historyTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_profile"
+            android:drawablePadding="8dp"
+            android:text="@string/profile"
+            android:textColor="@color/light_blue"
+            android:textSize="18sp"
+            android:drawableTint="@color/light_blue"
+            />
+
+        <TextView
+            android:id="@+id/settingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_settings"
+            android:drawablePadding="8dp"
+            android:text="@string/setting"
+            android:textColor="@color/gray"
+            android:textSize="18sp"
+            android:drawableTint="@color/gray"
+            />
+
+    </LinearLayout>
 
     <!-- Title -->
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:gravity="center"
         android:text="@string/profile_setup_title"
         android:textColor="@android:color/black"
@@ -404,5 +426,140 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="16dp"/>
+
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/navi_bottom"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:weightSum="5"
+        android:padding="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Item 1: Home -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/navHomeButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/ic_home"
+                android:drawablePadding="4dp"
+                android:text="@string/nav_home"
+                android:textAllCaps="false"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="12sp"
+                android:drawableTint="@android:color/holo_blue_dark" />
+
+        </LinearLayout>
+
+        <!-- Item 2: Progress -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/navProgressButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/ic_progress"
+                android:drawablePadding="4dp"
+                android:text="@string/nav_progress"
+                android:textAllCaps="false"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="12sp"
+                android:drawableTint="@android:color/holo_blue_dark" />
+
+        </LinearLayout>
+
+        <!-- Item 3: Type -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/navTypeButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/water_full_24px"
+                android:drawablePadding="4dp"
+                android:text="@string/nav_type"
+                android:textAllCaps="false"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="12sp"
+                android:drawableTint="@android:color/holo_blue_dark" />
+
+        </LinearLayout>
+
+        <!-- Item 4: Rewards -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/navRewardsButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/ic_rewards"
+                android:drawablePadding="4dp"
+                android:text="@string/nav_rewards"
+                android:textAllCaps="false"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="12sp"
+                android:drawableTint="@android:color/holo_blue_dark" />
+
+        </LinearLayout>
+
+        <!-- Item 5: Settings -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/navSettingsButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/ic_settings"
+                android:drawablePadding="4dp"
+                android:text="@string/nav_settings"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:drawableTint="@android:color/black"/>
+
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
