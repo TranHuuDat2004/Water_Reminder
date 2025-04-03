@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/buttonBack"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/back"
+        android:src="@drawable/ic_close"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"/>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/verification_code_title"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonBack"
+        android:layout_marginTop="32dp"/>
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/textViewDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:text="@string/verification_code_description"
+        android:textColor="#757575"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+    <!-- OTP Input Boxes -->
+
+    <!-- Verify Button -->
+    <LinearLayout
+        android:id="@+id/linearLayoutOtp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.396"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.252">
+
+        <EditText
+            android:id="@+id/editTextOtp1"
+            style="@style/OtpEditTextStyle"
+            android:maxLength="1" />
+
+        <EditText
+            android:id="@+id/editTextOtp2"
+            style="@style/OtpEditTextStyle"
+            android:maxLength="1" />
+
+        <EditText
+            android:id="@+id/editTextOtp3"
+            style="@style/OtpEditTextStyle"
+            android:maxLength="1" />
+
+        <EditText
+            android:id="@+id/editTextOtp4"
+            style="@style/OtpEditTextStyle"
+            android:maxLength="1" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonVerify"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#4FC3F7"
+        android:paddingVertical="12dp"
+        android:text="@string/verify_button"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutOtp"
+        android:stateListAnimator="@null"
+        android:layout_marginTop="32dp"/>
+
+    <!-- Resend Code -->
+
+    <TextView
+        android:id="@+id/textViewResend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="460dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/resend_code"
+        android:textColor="#4FC3F7"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
