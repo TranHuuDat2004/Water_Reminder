@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Màu văn bản khi mục được chọn (checked/selected) -->
+    <!-- Dựa theo ví dụ gốc, các mục được chọn sẽ có màu xanh -->
+    <item android:state_checked="true" android:color="@android:color/holo_blue_dark" />
+
+    <!-- Màu văn bản khi mục không được chọn (unchecked/default) -->
+    <!-- Dựa theo ví dụ gốc, mục Settings có màu đen. Chúng ta có thể dùng màu đen làm màu mặc định cho các mục không được chọn -->
+    <item android:state_checked="false" android:color="@android:color/black" />
+
+    <!-- Màu mặc định (fallback) - thường giống màu không được chọn -->
+    <item android:color="@android:color/black" />
+</selector>

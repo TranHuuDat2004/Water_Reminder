@@ -1,16 +1,17 @@
 package com.example.canvas;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
+// Xóa: import androidx.appcompat.app.AppCompatActivity; // Không cần nữa
+import android.content.Intent; // Vẫn cần nếu dùng Intent ở nơi khác
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View; // Import View
-import android.widget.Button;
-import android.widget.ProgressBar; // Import ProgressBar
+import android.view.View;
+// Xóa: import android.widget.Button; // Không cần tham chiếu trực tiếp Button nav nữa
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+// Import MenuItem nếu BaseNavigationActivity sử dụng (thường không cần trực tiếp trong lớp con)
+// import android.view.MenuItem;
 
 import com.example.canvas.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -18,136 +19,115 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException; // Import cho lỗi cụ thể hơn
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class StatusActivity extends AppCompatActivity {
+// 1. Kế thừa từ BaseNavigationActivity
+public class StatusActivity extends NavigationActivity {
 
+  // Các View để hiển thị dữ liệu trạng thái
   private TextView walkTextView, caloTextView, sleepTextView, heartTextView;
+  private ProgressBar loadingProgressBar; // ProgressBar cho trạng thái tải
 
-  private Button navSettingsButton, navHomeButton;
-  private ProgressBar loadingProgressBar; // Thêm ProgressBar
+  // Xóa: private Button navSettingsButton, navHomeButton; // Không cần nữa
+
   private static final String TAG = "StatusActivity"; // Tag cho logging
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    // 2. Đặt layout cho Activity này
     setContentView(R.layout.status_activity); // Đảm bảo layout có ProgressBar với id loading_progress_bar
 
+    // 3. Gọi setup của BaseNavigationActivity SAU setContentView
+    setupBottomNavigation();
+
+    // Lấy userId từ Intent (giữ nguyên)
     String userId = getIntent().getStringExtra("userId");
-    if (userId == null || userId.isEmpty()) { // Kiểm tra cả rỗng
+    if (userId == null || userId.isEmpty()) {
       Log.e(TAG, "Error: User ID is null or empty!");
       Toast.makeText(this, "Error: User ID is missing!", Toast.LENGTH_SHORT).show();
-      finish(); // Kết thúc Activity nếu không có userId
+      finish();
       return;
     }
 
+    // Tìm các View hiển thị dữ liệu (giữ nguyên)
     walkTextView = findViewById(R.id.walkTextView);
     caloTextView = findViewById(R.id.caloTextView);
     sleepTextView = findViewById(R.id.sleepTextView);
     heartTextView = findViewById(R.id.heartTextView);
+    loadingProgressBar = findViewById(R.id.loading_progress_bar);
 
-    // ---> THÊM DÒNG NÀY VÀO ĐÂY <---
-    loadingProgressBar = findViewById(R.id.loading_progress_bar); // Tìm ProgressBar
-
-    // Kiểm tra lại cho chắc chắn (không bắt buộc nhưng nên làm khi debug)
+    // Kiểm tra ProgressBar (giữ nguyên)
     if (loadingProgressBar == null) {
       Log.e(TAG, "FATAL ERROR: loading_progress_bar not found in layout!");
-      // Có thể hiển thị Toast hoặc dừng ứng dụng ở đây nếu muốn
       Toast.makeText(this, "Layout error: Loading indicator missing!", Toast.LENGTH_LONG).show();
-      finish(); // Hoặc xử lý khác
+      finish();
       return;
     }
 
-
-    // Bây giờ mới gọi showLoading
+    // Hiển thị trạng thái đang tải và bắt đầu lấy dữ liệu (giữ nguyên)
     showLoading(true);
-
     fetchUserData(userId);
-
-    //Example
-    navSettingsButton = findViewById(R.id.navSettingsButton);
-
-    // You can now use the userId in this activity
-    // Example: Log the user ID
-    //Log.d("Started1Activity", "User ID: " + userId);
-
-    navSettingsButton.setOnClickListener(v -> {
-      Intent intent = new Intent(StatusActivity.this, SettingsActivity.class);
-      intent.putExtra("userId", userId);
-      startActivity(intent);
-      finish();
-    });
-
-    //Example
-    navHomeButton = findViewById(R.id.navHomeButton);
-
-    // You can now use the userId in this activity
-    // Example: Log the user ID
-    //Log.d("Started1Activity", "User ID: " + userId);
-
-    navHomeButton.setOnClickListener(v -> {
-      Intent intent = new Intent(StatusActivity.this, StatusActivity.class);
-      intent.putExtra("userId", userId);
-      startActivity(intent);
-      finish();
-    });
 
   }
 
+  // 4. Implement phương thức trừu tượng từ BaseNavigationActivity
+  @Override
+  protected int getCurrentBottomNavigationItemId() {
+    // Trả về ID của mục menu tương ứng với StatusActivity.
+    // Giả sử StatusActivity là màn hình chính, tương ứng với nút Home.
+    return R.id.navHomeButton; // <<=== Đảm bảo ID này đúng với mục trong menu.xml
+  }
+
+
+  // --- Các phương thức fetchUserData, showLoading, showDefaultValues giữ nguyên ---
 
   private void fetchUserData(String userId) {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     DocumentReference userRef = db.collection("users").document(userId);
 
+    Log.d(TAG, "Firestore get() request initiated for user: " + userId); // Log khi bắt đầu request
+
     userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
       @Override
       public void onSuccess(DocumentSnapshot documentSnapshot) {
-        showLoading(false); // Ẩn ProgressBar khi thành công (hoặc không tìm thấy)
+        showLoading(false); // Ẩn ProgressBar
 
         if (documentSnapshot != null && documentSnapshot.exists()) {
           User user = documentSnapshot.toObject(User.class);
 
           if (user != null) {
-            // Sử dụng getters từ lớp User với kiểm tra null (như bạn đã làm)
             int walk = (user.getWalk() != null) ? user.getWalk() : 0;
             int calories = (user.getCalories() != null) ? user.getCalories() : 0;
             int sleep = (user.getSleep() != null) ? user.getSleep() : 0;
             int heart = (user.getHeart() != null) ? user.getHeart() : 0;
 
-            // Cập nhật UI - Listener này thường chạy trên Main Thread rồi
-            // nên không cần runOnUiThread, nhưng dùng cũng không sao.
             walkTextView.setText(String.valueOf(walk) + " steps");
-            caloTextView.setText(String.valueOf(calories) + " kcol" );
+            caloTextView.setText(String.valueOf(calories) + " kcol");
             sleepTextView.setText(String.valueOf(sleep) + " hours");
             heartTextView.setText(String.valueOf(heart) + " bpm");
             Log.d(TAG, "User data loaded successfully for user: " + userId);
 
           } else {
-            // Lỗi khi chuyển đổi DocumentSnapshot sang User POJO
             Log.w(TAG, "User object is null after deserialization for user: " + userId);
             Toast.makeText(StatusActivity.this, "Failed to parse user data", Toast.LENGTH_SHORT).show();
-            // Có thể hiện giá trị mặc định hoặc thông báo lỗi trên UI
             showDefaultValues();
           }
         } else {
-          // Document không tồn tại
           Log.w(TAG, "User document does not exist for user: " + userId);
           Toast.makeText(StatusActivity.this, "User data not found", Toast.LENGTH_SHORT).show();
-          // Hiện giá trị mặc định hoặc thông báo lỗi
           showDefaultValues();
         }
       }
     }).addOnFailureListener(new OnFailureListener() {
       @Override
       public void onFailure(@NonNull Exception e) {
-        showLoading(false); // Ẩn ProgressBar khi có lỗi
-        Log.e(TAG, "Error getting user data for user: " + userId, e); // Log lỗi đầy đủ
+        showLoading(false); // Ẩn ProgressBar
+        Log.e(TAG, "Error getting user data for user: " + userId, e);
 
-        // Phân tích lỗi cụ thể nếu cần
         if (e instanceof FirebaseFirestoreException) {
           FirebaseFirestoreException firestoreEx = (FirebaseFirestoreException) e;
           Log.e(TAG, "Firestore Error Code: " + firestoreEx.getCode());
-          // Ví dụ: Xử lý lỗi không có mạng, quyền...
           if (firestoreEx.getCode() == FirebaseFirestoreException.Code.PERMISSION_DENIED) {
             Toast.makeText(StatusActivity.this, "Permission Denied.", Toast.LENGTH_LONG).show();
           } else if (firestoreEx.getCode() == FirebaseFirestoreException.Code.UNAVAILABLE) {
@@ -158,37 +138,37 @@ public class StatusActivity extends AppCompatActivity {
         } else {
           Toast.makeText(StatusActivity.this, "Error loading data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        // Hiện giá trị mặc định hoặc thông báo lỗi
         showDefaultValues();
       }
     });
-
-    Log.d(TAG, "Firestore get() request initiated for user: " + userId);
-    // Code ở đây sẽ chạy ngay lập tức, KHÔNG đợi kết quả từ Firestore
   }
 
-  // Helper method để hiển thị/ẩn loading state
   private void showLoading(boolean isLoading) {
+    // Đảm bảo progressBar không null trước khi sử dụng
+    if (loadingProgressBar == null) return;
+
     if (isLoading) {
       loadingProgressBar.setVisibility(View.VISIBLE);
-      walkTextView.setVisibility(View.INVISIBLE);
-      caloTextView.setVisibility(View.INVISIBLE);
-      sleepTextView.setVisibility(View.INVISIBLE);
-      heartTextView.setVisibility(View.INVISIBLE);
+      // Ẩn các TextView dữ liệu
+      if (walkTextView != null) walkTextView.setVisibility(View.INVISIBLE);
+      if (caloTextView != null) caloTextView.setVisibility(View.INVISIBLE);
+      if (sleepTextView != null) sleepTextView.setVisibility(View.INVISIBLE);
+      if (heartTextView != null) heartTextView.setVisibility(View.INVISIBLE);
     } else {
       loadingProgressBar.setVisibility(View.GONE);
-      walkTextView.setVisibility(View.VISIBLE);
-      caloTextView.setVisibility(View.VISIBLE);
-      sleepTextView.setVisibility(View.VISIBLE);
-      heartTextView.setVisibility(View.VISIBLE);
+      // Hiện các TextView dữ liệu
+      if (walkTextView != null) walkTextView.setVisibility(View.VISIBLE);
+      if (caloTextView != null) caloTextView.setVisibility(View.VISIBLE);
+      if (sleepTextView != null) sleepTextView.setVisibility(View.VISIBLE);
+      if (heartTextView != null) heartTextView.setVisibility(View.VISIBLE);
     }
   }
 
-  // Helper method để hiển thị giá trị mặc định khi có lỗi hoặc không tìm thấy data
   private void showDefaultValues() {
-    walkTextView.setText("0");
-    caloTextView.setText("0");
-    sleepTextView.setText("0");
-    heartTextView.setText("0");
+    // Đảm bảo các TextView không null trước khi sử dụng
+    if (walkTextView != null) walkTextView.setText("0 steps");
+    if (caloTextView != null) caloTextView.setText("0 kcol");
+    if (sleepTextView != null) sleepTextView.setText("0 hours");
+    if (heartTextView != null) heartTextView.setText("0 bpm");
   }
 }

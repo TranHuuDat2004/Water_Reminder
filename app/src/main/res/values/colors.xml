@@ -29,4 +29,6 @@
 
     <color name="orange">#FF9800</color>
     <color name="red">#F44336</color>
+    <color name="neutral_gray" />
+    <color name="positive_green" />
 </resources>
