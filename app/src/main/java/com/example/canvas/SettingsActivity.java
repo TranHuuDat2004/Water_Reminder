@@ -1,8 +1,8 @@
-package com.example.canvas; // Thay đổi package name nếu cần
+package com.example.canvas; // Hoặc package của bạn
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.Intent; // Giữ lại nếu cần cho các Intent khác (không phải nav)
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -11,105 +11,109 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+// Xóa: import android.widget.Button; // Không cần nút nav nữa
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast; // Thêm Toast để thông báo
+import android.widget.Toast;
 
+import androidx.annotation.Nullable; // Thêm cái này cho savedInstanceState
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+// Import lớp cơ sở điều hướng của bạn
+// Đảm bảo tên lớp này là chính xác (NavigationActivity hoặc BaseNavigationActivity)
+import com.example.canvas.NavigationActivity; // <<< SỬ DỤNG TÊN LỚP CƠ SỞ ĐÚNG
 
 import java.util.Locale;
 
-public class SettingsActivity extends AppCompatActivity {
+// 1. Kế thừa từ lớp Activity cơ sở chứa logic điều hướng
+public class SettingsActivity extends NavigationActivity { // <<< SỬ DỤNG TÊN LỚP CƠ SỞ ĐÚNG
 
+  // --- Fields từ logic ngôn ngữ ---
   private static final String TAG = "SettingsActivity";
-  private static final String PREFS_NAME = "SettingsPrefs"; // Tên file SharedPreferences
-  private static final String PREF_LANGUAGE = "selected_language"; // Key lưu ngôn ngữ
+  private static final String PREFS_NAME = "SettingsPrefs";
+  private static final String PREF_LANGUAGE = "selected_language";
 
   private RelativeLayout languageLayout;
   private TextView languageValue;
 
-  // Mảng chứa tên ngôn ngữ hiển thị trong Dialog
   private String[] languageDisplayNames;
-  // Mảng chứa mã ngôn ngữ tương ứng (quan trọng để set Locale)
-  private String[] languageCodes = {"en", "vi"}; // "en" cho English, "vi" cho Tiếng Việt
-  private String currentLanguageCode;
-  private Button navHomeButton;
+  private String[] languageCodes = {"en", "vi"}; // Mã ngôn ngữ
+  private String currentLanguageCode; // Mã ngôn ngữ đang được sử dụng
+
+  // Xóa: private Button navHomeButton; // Không cần nữa
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
     // --- QUAN TRỌNG: Áp dụng ngôn ngữ đã lưu TRƯỚC khi setContentView ---
-    // Điều này đảm bảo Activity này cũng hiển thị đúng ngôn ngữ ngay từ đầu
     loadLocale();
     // ---
 
-    setContentView(R.layout.settings);
+    super.onCreate(savedInstanceState); // Gọi super sau loadLocale nhưng trước setContentView
 
-    // Khởi tạo mảng tên ngôn ngữ (nên lấy từ resources để hỗ trợ đa ngôn ngữ tốt hơn)
-    // Ví dụ đơn giản:
-    languageDisplayNames = new String[]{"English", "Tiếng Việt"};
+    // --- Đặt layout XML tĩnh cho Activity này ---
+    try {
+      setContentView(R.layout.settings); // <<< SỬ DỤNG LAYOUT CHO SETTINGS
+    } catch (Exception e) {
+      Log.e(TAG, "Error setting content view. Check R.layout.settings exists and is valid.", e);
+      Toast.makeText(this, "Layout Error (Settings)", Toast.LENGTH_LONG).show();
+      finish();
+      return;
+    }
+
+    // --- Gọi phương thức setup của lớp cơ sở ĐIỀU HƯỚNG SAU setContentView ---
+    try {
+      setupBottomNavigation();
+    } catch (Exception e) {
+      Log.e(TAG, "Error setting up bottom navigation in SettingsActivity.", e);
+      Toast.makeText(this, "Navigation Error (Settings)", Toast.LENGTH_LONG).show();
+    }
+
+    // --- Khởi tạo và xử lý logic cài đặt ngôn ngữ ---
+    languageDisplayNames = new String[]{"English", "Tiếng Việt"}; // Có thể lấy từ R.string
 
     languageLayout = findViewById(R.id.languageLayout);
     languageValue = findViewById(R.id.languageValue);
 
-    // Lấy ngôn ngữ hiện tại (đã được load bởi loadLocale())
-    currentLanguageCode = getPersistedData(this, PREF_LANGUAGE);
-    if (currentLanguageCode == null || currentLanguageCode.isEmpty()) {
-      // Nếu chưa có, lấy ngôn ngữ mặc định của hệ thống
-      currentLanguageCode = Locale.getDefault().getLanguage();
-      // Giới hạn trong các ngôn ngữ hỗ trợ (ví dụ chỉ en/vi)
-      boolean supported = false;
-      for (String code : languageCodes) {
-        if (code.equals(currentLanguageCode)) {
-          supported = true;
-          break;
+    // Kiểm tra null cho View trước khi sử dụng
+    if (languageLayout == null || languageValue == null) {
+      Log.e(TAG, "Error finding language layout views. Check IDs in R.layout.settings.");
+      Toast.makeText(this, "UI Error (Settings)", Toast.LENGTH_SHORT).show();
+      // Có thể không cần finish(), nhưng chức năng ngôn ngữ sẽ không hoạt động
+    } else {
+      // currentLanguageCode đã được thiết lập trong loadLocale()
+      updateLanguageValueText(); // Cập nhật TextView hiển thị
+
+      languageLayout.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          showLanguageSelectionDialog();
         }
-      }
-      if (!supported) {
-        currentLanguageCode = "en"; // Mặc định là English nếu ngôn ngữ hệ thống không được hỗ trợ
-      }
+      });
     }
 
+    // --- XÓA LOGIC getIntent và setOnClickListener cho navHomeButton ---
+        /*
+        Intent intent = getIntent();
+        String userId = intent.getStringExtra("userId");
+        navHomeButton = findViewById(R.id.navHomeButton);
+        navHomeButton.setOnClickListener(v -> { ... });
+        */
+    // Nếu cần userId, truy cập biến `currentUserId` được kế thừa từ lớp cơ sở
 
-    updateLanguageValueText(); // Cập nhật TextView hiển thị
-
-    languageLayout.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        showLanguageSelectionDialog();
-      }
-    });
-
-    // (Thêm các findViewById và listener khác cho các mục cài đặt còn lại nếu cần)
-
-    // 1. Lấy Intent đã khởi động Activity này
-    Intent intent = getIntent();
-
-    // 2. Truy xuất String extra bằng ĐÚNG key "userId"
-    String userId = intent.getStringExtra("userId"); // Key phải khớp với key khi gửi
-    
-    //Example
-    navHomeButton = findViewById(R.id.navHomeButton);
-
-    // You can now use the userId in this activity
-    // Example: Log the user ID
-    //Log.d("Started1Activity", "User ID: " + userId);
-
-    navHomeButton.setOnClickListener(v -> {
-      Intent intentA = new Intent(SettingsActivity.this, StatusActivity.class);
-      intentA.putExtra("userId", userId);
-      startActivity(intentA);
-      finish();
-    });
+    Log.d(TAG, "SettingsActivity created. Current language code: " + currentLanguageCode);
   }
 
+  // 2. Implement phương thức trừu tượng để BaseNavigationActivity biết mục nào đang active
+  @Override
+  protected int getCurrentBottomNavigationItemId() {
+    // Trả về ID của mục "Settings" trong tệp menu.xml của bạn
+    return R.id.navSettingsButton; // <<< Đảm bảo ID này khớp với menu item "Settings"
+  }
+
+  // --- Các phương thức xử lý ngôn ngữ (giữ nguyên từ phiên bản đầu) ---
+
   private void updateLanguageValueText() {
-    // Tìm tên hiển thị tương ứng với mã ngôn ngữ hiện tại
-    String displayName = "Unknown"; // Giá trị mặc định nếu không tìm thấy
+    if (languageValue == null || languageCodes == null || languageDisplayNames == null) return;
+    String displayName = "Unknown";
     for (int i = 0; i < languageCodes.length; i++) {
       if (languageCodes[i].equals(currentLanguageCode)) {
         displayName = languageDisplayNames[i];
@@ -119,12 +123,10 @@ public class SettingsActivity extends AppCompatActivity {
     languageValue.setText(displayName);
   }
 
-
   private void showLanguageSelectionDialog() {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle(getString(R.string.language)); // Lấy tiêu đề từ resources
+    builder.setTitle(getString(R.string.language)); // Nên dùng R.string.language
 
-    // Tìm index của ngôn ngữ hiện tại để check radio button
     int currentLanguageIndex = -1;
     for (int i = 0; i < languageCodes.length; i++) {
       if (languageCodes[i].equals(currentLanguageCode)) {
@@ -136,169 +138,117 @@ public class SettingsActivity extends AppCompatActivity {
     builder.setSingleChoiceItems(languageDisplayNames, currentLanguageIndex, new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
-        // Lấy mã ngôn ngữ mới được chọn
         String selectedLanguageCode = languageCodes[which];
-
-        // Chỉ thực hiện nếu ngôn ngữ thay đổi
         if (!selectedLanguageCode.equals(currentLanguageCode)) {
           setLocale(selectedLanguageCode);
-          // Đóng dialog
           dialog.dismiss();
-          // Khởi động lại Activity để áp dụng thay đổi ngôn ngữ
-          recreate();
-          Toast.makeText(SettingsActivity.this, "Language changed", Toast.LENGTH_SHORT).show(); // Thông báo ngắn
+          // Khởi động lại Activity để áp dụng ngôn ngữ mới cho UI của nó
+          recreate(); // This re-runs onCreate with the new configuration
+          Toast.makeText(SettingsActivity.this, "Language changed", Toast.LENGTH_SHORT).show();
         } else {
-          // Nếu chọn lại ngôn ngữ hiện tại thì thôi
           dialog.dismiss();
         }
       }
     });
 
-    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
-        dialog.dismiss();
-      }
-    });
-
+    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
     AlertDialog dialog = builder.create();
     dialog.show();
   }
 
-  // Hàm áp dụng Locale mới
+  // Áp dụng Locale mới và lưu vào SharedPreferences
   private void setLocale(String langCode) {
     if (langCode == null || langCode.isEmpty()) {
-      Log.e(TAG, "Language code is null or empty. Cannot set locale.");
+      Log.w(TAG, "Attempted to set null or empty language code.");
       return;
     }
-    Log.d(TAG, "Setting locale to: " + langCode);
-    // Lưu ngôn ngữ mới vào SharedPreferences
+    Log.i(TAG, "Setting locale to: " + langCode);
     persistData(this, PREF_LANGUAGE, langCode);
 
-    // Tạo đối tượng Locale
     Locale locale = new Locale(langCode);
-    Locale.setDefault(locale); // Set locale mặc định cho JVM
+    Locale.setDefault(locale);
 
-    // Cập nhật configuration cho application context
     Resources res = getResources();
-    DisplayMetrics dm = res.getDisplayMetrics();
     Configuration conf = res.getConfiguration();
 
+    // Nên dùng context của Application để cập nhật nếu có thể,
+    // nhưng cập nhật context của Activity cũng hoạt động cho recreate()
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
       conf.setLocale(locale);
+      // createConfigurationContext(conf); // Cập nhật context cho Activity này
     } else {
-      conf.locale = locale; // API < 24
+      conf.locale = locale;
     }
-    // Cần cập nhật lại configuration của Resources
-    res.updateConfiguration(conf, dm);
+    res.updateConfiguration(conf, res.getDisplayMetrics());
 
-    // Cập nhật biến global
+    // Cập nhật biến global sau khi đã áp dụng thành công
     currentLanguageCode = langCode;
-
-    Log.d(TAG, "Locale updated successfully.");
-
-    // Lưu ý: Việc gọi recreate() trong showLanguageSelectionDialog sẽ load lại UI
-    // với configuration mới này.
   }
 
-  // Hàm load Locale khi Activity khởi tạo
+  // Load Locale đã lưu khi Activity khởi tạo (gọi trước setContentView)
   private void loadLocale() {
     String language = getPersistedData(this, PREF_LANGUAGE);
-    // Chỉ set nếu đã có ngôn ngữ được lưu và khác với ngôn ngữ hiện tại của configuration
-    // (Tránh việc set lại không cần thiết)
-    if (language != null && !language.isEmpty()) {
-      // Lấy config hiện tại để so sánh
-      Configuration currentConfig = getResources().getConfiguration();
-      Locale currentLocale;
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        currentLocale = currentConfig.getLocales().get(0);
-      } else {
-        currentLocale = currentConfig.locale;
-      }
+    String targetLanguageCode = null;
 
-      // Chỉ set lại nếu khác
-      if (!language.equals(currentLocale.getLanguage())) {
-        Log.d(TAG, "Loading saved locale: " + language);
-        setLocale(language); // Gọi setLocale để áp dụng cho Context này trước khi UI được tạo
-      } else {
-        Log.d(TAG, "Saved locale (" + language + ") matches current config locale. No change needed on load.");
-        // Cập nhật biến global phòng trường hợp chạy lần đầu
-        currentLanguageCode = language;
-      }
+    if (language != null && !language.isEmpty()) {
+      targetLanguageCode = language;
+      Log.d(TAG, "Found saved language: " + targetLanguageCode);
     } else {
-      Log.d(TAG, "No saved language found. Using default.");
-      // Nếu không có gì được lưu, dùng locale mặc định, không cần làm gì thêm ở đây
-      // vì hệ thống đã làm rồi. Chỉ cần cập nhật biến currentLanguageCode
-      currentLanguageCode = Locale.getDefault().getLanguage();
-      // Giới hạn trong các ngôn ngữ hỗ trợ (ví dụ chỉ en/vi)
+      // Không có ngôn ngữ đã lưu, dùng default hệ thống (và kiểm tra hỗ trợ)
+      String deviceLanguage = Locale.getDefault().getLanguage();
+      Log.d(TAG, "No saved language, device default: " + deviceLanguage);
       boolean supported = false;
       for (String code : languageCodes) {
-        if (code.equals(currentLanguageCode)) {
+        if (code.equals(deviceLanguage)) {
           supported = true;
+          targetLanguageCode = deviceLanguage;
           break;
         }
       }
       if (!supported) {
-        currentLanguageCode = "en"; // Mặc định là English
+        targetLanguageCode = "en"; // Fallback về English nếu default không hỗ trợ
+        Log.d(TAG, "Device language not supported, falling back to: " + targetLanguageCode);
       }
+    }
+
+    // Chỉ gọi setLocale nếu ngôn ngữ mục tiêu khác với ngôn ngữ hiện tại của config
+    Configuration currentConfig = getResources().getConfiguration();
+    Locale currentLocale;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      currentLocale = currentConfig.getLocales().get(0);
+    } else {
+      currentLocale = currentConfig.locale;
+    }
+
+    if (targetLanguageCode != null && !targetLanguageCode.equals(currentLocale.getLanguage())) {
+      Log.i(TAG, "Applying locale on load: " + targetLanguageCode);
+      setLocale(targetLanguageCode); // Áp dụng locale
+    } else {
+      Log.d(TAG, "Locale already set or no change needed on load. Current code: " + targetLanguageCode);
+      // Đảm bảo biến global được cập nhật đúng ngay cả khi không gọi setLocale
+      currentLanguageCode = targetLanguageCode;
     }
 
   }
 
-  // ---- Helper functions for SharedPreferences ----
+  // ---- Helper functions for SharedPreferences (giữ nguyên) ----
   public static void persistData(Context context, String key, String value) {
     SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = prefs.edit();
     editor.putString(key, value);
-    editor.apply(); // Dùng apply() thay vì commit() để chạy bất đồng bộ
+    editor.apply();
   }
-
 
   public static String getPersistedData(Context context, String key) {
     SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-    // Trả về null nếu không tìm thấy key
-    return prefs.getString(key, null);
+    return prefs.getString(key, null); // Trả về null nếu không tìm thấy
   }
-  // ---------------------------------------------
 
-  // ---- QUAN TRỌNG: Để đảm bảo ngôn ngữ áp dụng cho toàn bộ app ----
-  // ---- ngay cả trước khi Activity được tạo, bạn nên override ----
-  // ---- attachBaseContext trong một BaseActivity hoặc Application class ----
-
-     /* Ví dụ trong một BaseActivity mà tất cả các Activity khác kế thừa:
-
-     @Override
-     protected void attachBaseContext(Context newBase) {
-         String langCode = getPersistedData(newBase, PREF_LANGUAGE);
-         if (langCode == null || langCode.isEmpty()) {
-              // Lấy default hoặc set một ngôn ngữ mặc định ("en")
-              langCode = Locale.getDefault().getLanguage();
-              // Optionally validate against supported codes like above
-         }
-         super.attachBaseContext(LocaleHelper.setLocale(newBase, langCode)); // LocaleHelper là class tự tạo
-     }
-
-     // LocaleHelper.java (ví dụ)
-     public class LocaleHelper {
-         public static Context setLocale(Context context, String language) {
-             Locale locale = new Locale(language);
-             Locale.setDefault(locale);
-
-             Resources resources = context.getResources();
-             Configuration config = resources.getConfiguration();
-
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                 config.setLocale(locale);
-                 return context.createConfigurationContext(config);
-             } else {
-                 config.locale = locale;
-                 resources.updateConfiguration(config, resources.getDisplayMetrics());
-                 return context; // Trên API cũ, context tự cập nhật
-             }
-         }
-     }
-     */
-  // ---- Nếu không dùng BaseActivity, cách trên là đủ để ----
-  // ---- SettingsActivity tự cập nhật ----
-
+  // ---- Ghi chú về attachBaseContext ----
+  // Để áp dụng ngôn ngữ ngay lập tức cho TOÀN BỘ ứng dụng và TRƯỚC KHI
+  // bất kỳ Activity nào được tạo, cách tốt nhất là override attachBaseContext
+  // trong một BaseActivity chung (mà tất cả các Activity khác kế thừa)
+  // hoặc trong lớp Application của bạn. Xem comment trong mã gốc của bạn.
+  // Phương pháp loadLocale() trong onCreate chỉ đảm bảo Activity *này*
+  // được cập nhật đúng khi nó khởi động hoặc được recreate().
 }
