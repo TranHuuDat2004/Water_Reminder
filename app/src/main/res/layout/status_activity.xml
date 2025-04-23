@@ -131,18 +131,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/addButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/rounded_button"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/ic_add"
+                app:backgroundTint="#29B6F6"
                 android:contentDescription="Thêm nhắc nhở"
                 app:layout_constraintBottom_toBottomOf="@+id/recordTitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/recordTitle" />
+                app:layout_constraintTop_toTopOf="@+id/recordTitle"
+
+                app:icon="@drawable/ic_add"
+                app:iconPadding="0dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                app:iconGravity="textStart"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="24dp"
+                android:text=""
+                />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier"

@@ -23,7 +23,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="99dp"
             android:layout_marginBottom="20dp"
-            android:text="For Today"
+            android:text="Type Water"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -32,6 +32,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/topLayout"
         android:layout_width="0dp"
@@ -70,14 +73,14 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:contentDescription="@string/water"
-                        android:src="@drawable/walk"
+                        android:src="@drawable/ic_water_drop"
                         app:tint="#00BCD4" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/walk"
+                        android:text="@string/water"
                         android:textColor="#212121"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -85,7 +88,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/steps"
+                        android:text="@string/add_a_water"
                         android:textColor="#757575"
                         android:textSize="14sp" />
 
@@ -114,14 +117,14 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:contentDescription="@string/tea"
-                        android:src="@drawable/calo"
+                        android:src="@drawable/ic_leaf"
                         app:tint="#8BC34A" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/calories"
+                        android:text="@string/tea"
                         android:textColor="#212121"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -129,7 +132,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/kcol"
+                        android:text="@string/add_a_tea"
                         android:textColor="#757575"
                         android:textSize="14sp" />
 
@@ -166,14 +169,14 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:contentDescription="@string/coffee"
-                        android:src="@drawable/sleep"
+                        android:src="@drawable/ic_coffee_cup"
                         app:tint="#A1887F" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/sleep"
+                        android:text="@string/coffee"
                         android:textColor="#212121"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -181,7 +184,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/hours"
+                        android:text="@string/add_a_coffee"
                         android:textColor="#757575"
                         android:textSize="14sp" />
 
@@ -210,14 +213,14 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:contentDescription="@string/juice"
-                        android:src="@drawable/heart"
+                        android:src="@drawable/ic_apple"
                         app:tint="@android:color/darker_gray" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/heart"
+                        android:text="@string/juice"
                         android:textColor="#212121"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -225,7 +228,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/bpm"
+                        android:text="@string/add_a_juice"
                         android:textColor="#757575"
                         android:textSize="14sp" />
 

@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 // Import lớp cơ sở điều hướng của bạn
 // Đảm bảo tên lớp 'BaseNavigationActivity' là chính xác
-import com.example.canvas.NavigationActivity;
+
 
 // Kế thừa từ lớp Activity cơ sở chứa logic điều hướng
 public class TypeActivity extends NavigationActivity {

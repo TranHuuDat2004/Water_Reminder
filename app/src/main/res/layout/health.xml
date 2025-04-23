@@ -23,7 +23,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="99dp"
             android:layout_marginBottom="20dp"
-            android:text="Type Water"
+            android:text="For Today"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -32,9 +32,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/topLayout"
         android:layout_width="0dp"
@@ -73,14 +70,14 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:contentDescription="@string/water"
-                        android:src="@drawable/ic_water_drop"
+                        android:src="@drawable/walk"
                         app:tint="#00BCD4" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/water"
+                        android:text="@string/walk"
                         android:textColor="#212121"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -88,7 +85,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_a_water"
+                        android:text="@string/steps"
                         android:textColor="#757575"
                         android:textSize="14sp" />
 
@@ -117,14 +114,14 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:contentDescription="@string/tea"
-                        android:src="@drawable/ic_leaf"
+                        android:src="@drawable/calo"
                         app:tint="#8BC34A" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/tea"
+                        android:text="@string/calories"
                         android:textColor="#212121"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -132,7 +129,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_a_tea"
+                        android:text="@string/kcol"
                         android:textColor="#757575"
                         android:textSize="14sp" />
 
@@ -169,14 +166,14 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:contentDescription="@string/coffee"
-                        android:src="@drawable/ic_coffee_cup"
+                        android:src="@drawable/sleep"
                         app:tint="#A1887F" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/coffee"
+                        android:text="@string/sleep"
                         android:textColor="#212121"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -184,7 +181,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_a_coffee"
+                        android:text="@string/hours"
                         android:textColor="#757575"
                         android:textSize="14sp" />
 
@@ -213,14 +210,14 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:contentDescription="@string/juice"
-                        android:src="@drawable/ic_apple"
+                        android:src="@drawable/heart"
                         app:tint="@android:color/darker_gray" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/juice"
+                        android:text="@string/heart"
                         android:textColor="#212121"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -228,7 +225,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_a_juice"
+                        android:text="@string/bpm"
                         android:textColor="#757575"
                         android:textSize="14sp" />
 
@@ -240,129 +237,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/bottomNav"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/navi_bottom"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:weightSum="5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/ic_home" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/ic_progress" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Progress"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/water_full_24px" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Type"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/ic_rewards" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rewards"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="#29B6F6"
-                android:src="@drawable/ic_settings" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Settings"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14dp" />
-        </LinearLayout>
-    </LinearLayout>
+    <!-- Bao gồm Bottom Navigation -->
+    <include layout="@layout/bottom_navigation_layout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
