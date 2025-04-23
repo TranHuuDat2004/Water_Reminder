@@ -1,18 +1,27 @@
 package com.example.canvas;
 
 import com.example.canvas.models.User;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     // Xác định xem activity là đăng nhập hay đăng ký
     if (getIntent().hasExtra("activity_type")) {
       activityType = getIntent().getStringExtra("activity_type");
@@ -61,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
 
     // Initialize Firebase Realtime Database
     mDatabase = FirebaseDatabase.getInstance().getReference();
+
+    // Gắn sự kiện Click cho nút dấu cộng (ImageButton)
+    ImageButton addButton = findViewById(R.id.addButton);
+    // Kiểm tra xem nút có bị null không
+    if (addButton != null) {
+      addButton.setOnClickListener(v -> showAddReminderDialog(MainActivity.this));
+    } else {
+      Log.e("MainActivity", "Lỗi: Không tìm thấy addButton");
+    }
 
     if (activityType.equals("login")) {
       tvSignUp.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +219,45 @@ public class MainActivity extends AppCompatActivity {
                 }
               }
             });
+  }
+
+
+  //hien thong bao khi nguoi dung add
+  public void showAddReminderDialog(Context context) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    builder.setTitle("Nhập thông tin nhắc nhở");
+
+    View view = LayoutInflater.from(context).inflate(R.layout.dialog_add_reminder, null);
+    TimePicker timePicker = view.findViewById(R.id.timePicker);
+    EditText waterInput = view.findViewById(R.id.waterInput);
+
+    builder.setView(view);
+
+    builder.setPositiveButton("Lưu", (dialog, which) -> {
+      int hour = timePicker.getHour();
+      int minute = timePicker.getMinute();
+      String waterAmount = waterInput.getText().toString();
+
+      ReminderManager reminderManager = new ReminderManager();
+      reminderManager.saveReminder(hour, minute, waterAmount);
+    });
+
+    builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+
+    builder.show();
+  }
+
+  private void createNotificationChannel() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      CharSequence name = "Nhắc nhở uống nước";
+      String description = "Kênh thông báo nhắc nhở uống nước";
+      int importance = NotificationManager.IMPORTANCE_HIGH;
+      NotificationChannel channel = new NotificationChannel("drink_water_channel", name, importance);
+      channel.setDescription(description);
+
+      NotificationManager notificationManager = getSystemService(NotificationManager.class);
+      notificationManager.createNotificationChannel(channel);
+    }
   }
 
 
