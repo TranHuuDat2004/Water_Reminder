@@ -46,7 +46,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="138dp"
             android:padding="16dp">
 
             <FrameLayout
@@ -59,8 +59,8 @@
                 <ProgressBar
                     android:id="@+id/progressCircle"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:indeterminate="false"
                     android:max="100"
                     android:progress="50"
