@@ -39,8 +39,25 @@
 
 
         <activity
+            android:name=".RewardActivity"
+            android:exported="false">
+
+        <!-- Bạn có thể thêm parentActivityName để có nút Back nếu cần -->
+        <!-- <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".StatusActivity" /> -->
+    </activity>
+
+
+        <activity
             android:name=".SignupActivity"
             android:exported="false">  <!-- Adjust exported as needed -->
+        </activity>
+
+        <activity
+            android:name=".GoalStatusActivity"
+            android:exported="false">
+
         </activity>
 
         <activity android:name=".Started1Activity"
@@ -57,11 +74,11 @@
         <activity android:name=".ProgressActivity"
             android:exported="false"/>
 
-        <activity android:name=".TypeActivity"
-            android:exported="false"/>
+        <activity android:name=".EditProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/> <!-- AdjustResize giúp layout không bị đẩy lên quá nhiều bởi bàn phím -->
 
-        <activity android:name=".RewardsActivity"
-            android:exported="false"/>
+
     </application>
 
 </manifest>

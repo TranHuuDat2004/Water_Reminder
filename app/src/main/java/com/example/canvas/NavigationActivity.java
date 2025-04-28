@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log; // Thêm Log để debug (tùy chọn)
 import android.view.MenuItem;
 // Các import khác nếu cần (View, ViewGroup, CoordinatorLayout...)
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -99,10 +98,10 @@ public abstract class NavigationActivity extends AppCompatActivity implements Na
             intent = new Intent(this, StatusActivity.class);
         } else if (itemId == R.id.navProgressButton) {
             intent = new Intent(this, ProgressActivity.class);
-        } else if (itemId == R.id.navTypeButton) {
-            intent = new Intent(this, TypeActivity.class);
+        } else if (itemId == R.id.navProfileButton) {
+            intent = new Intent(this, EditProfileActivity.class);
         } else if (itemId == R.id.navRewardsButton) {
-            intent = new Intent(this, RewardsActivity.class);
+            intent = new Intent(this, RewardActivity.class);
         } else if (itemId == R.id.navSettingsButton) {
             intent = new Intent(this, SettingsActivity.class);
         }

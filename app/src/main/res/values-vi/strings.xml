@@ -1,4 +1,15 @@
 <resources>
+    <!-- Strings for Notification Channel -->
+    <string name="greeting_format">Chào mừng, %1$s! 👋</string>
+    <string name="congratulations_title_string">Chúc mừng!</string>
+    <string name="congratulations_quote_string">Bạn có thể có được mọi thứ trong cuộc sống nếu bạn giúp đủ người khác đạt được điều họ muốn.</string>
+    <string name="failure_quote_string">Thành công không phải là cuối cùng, thất bại không phải là chí mạng: lòng can đảm đi tiếp mới là điều quan trọng.</string>
+    <string name="reminder_title">Đến giờ uống nước!</string>
+    <string name="reminder_text">Đừng quên uống nước nhé.</string>
+    <string name="reminder_channel_name">Nhắc nhở Uống Nước</string>
+    <string name="reminder_channel_description">Kênh dành cho thông báo nhắc nhở uống nước</string>
+    <string name="english">Tiếng Anh</string>
+    <string name="vietnamese">Tiếng Việt</string>
     <string name="app_name">Ứng Dụng Của Bạn</string>
     <string name="login">Đăng nhập</string>
     <string name="Signup">Đăng ký</string>
@@ -136,7 +147,9 @@
     <string name="nav_home">Trang chủ</string>
     <string name="nav_progress">Tiến trình</string>
     <string name="nav_type">Loại</string>
+    <string name="nav_profile">Hồ sơ</string>
     <string name="nav_rewards">Phần thưởng</string>
     <string name="nav_settings">Cài đặt</string>
+    <string name="back_button_desc">Trở về</string>
 
 </resources>

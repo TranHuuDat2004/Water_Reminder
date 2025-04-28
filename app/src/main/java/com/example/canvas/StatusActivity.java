@@ -1,9 +1,12 @@
 // File: StatusActivity.java
 package com.example.canvas; // <-- Giữ nguyên package của bạn
 
+// --- THÊM IMPORT NÀY ---
 import androidx.annotation.NonNull;
+// --- KẾT THÚC THÊM IMPORT ---
+
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+// import androidx.appcompat.app.AppCompatActivity; // Bạn đang dùng NavigationActivity
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -13,6 +16,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,16 +25,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar; // Đã import
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-// Thêm các import cần thiết
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
-// import com.google.android.material.floatingactionbutton.FloatingActionButton; // Bạn đang dùng MaterialButton
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -44,281 +46,262 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-// import java.util.TimeZone; // Có thể không cần nếu không xử lý timezone phức tạp
 
 public class StatusActivity extends NavigationActivity {
 
   private static final String TAG = "StatusActivity";
-  private static final int REQUEST_CODE_POST_NOTIFICATIONS = 1001;
+  private static final int REQUEST_CODE_POST_NOTIFICATIONS = 1001; // Giữ nguyên giá trị bạn đang dùng
+  private static final String PREFS_NAME = "WaterTrackerPrefs";
+  private static final String KEY_LAST_GOAL_CHECK_DATE = "lastGoalCheckDate";
+  private static final String KEY_GOAL_STATUS_SHOWN = "goalStatusShownToday";
 
-
-  // Khai báo các View (Sử dụng ID từ code bạn cung cấp)
+  // Khai báo các View
   private TextView tvWelcomeMessage;
   private TextView tvHydrationProgress;
   private TextView tvWaterPercent;
   private TextView tvNextReminderDisplay;
   private TextView tvLastWaterAmount;
-  private ProgressBar progressBarWater; // ProgressBar hình tròn
-  private MaterialButton fabAddWater;    // Nút thêm nước
+  private ProgressBar progressBarWater;
+  private MaterialButton fabAddWater;
+  private ProgressBar loadingProgressBar;
 
   // Khai báo Firebase
   private FirebaseAuth mAuth;
   private FirebaseFirestore db;
   private FirebaseUser currentUser;
   private String userId;
-  private String userDisplayName = "User"; // Tên mặc định
+  private String userDisplayName = "User";
 
   // Biến lưu trữ dữ liệu
   private int currentWaterIntake = 0;
-  private int waterGoal = 2100; // Giá trị mặc định, sẽ được ghi đè từ Firestore
+  private int waterGoal = 2100;
   private long nextReminderTimestamp = 0;
+
+  // Biến kiểm tra trạng thái hoàn thành mục tiêu
+  private boolean goalStatusShownToday = false;
+  private String lastGoalCheckDate = "";
 
   // Định dạng ngày giờ
   private final SimpleDateFormat firestoreDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
   private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+  private final SimpleDateFormat dateCheckFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    // Đảm bảo tên layout này đúng: "status_activity.xml"
     setContentView(R.layout.status_activity);
 
-    // *** THÊM DÒNG NÀY ***
-    setupBottomNavigation(); // Gọi phương thức từ lớp cha để thiết lập BottomNavigationView
+    setupBottomNavigation();
 
-
-    // Khởi tạo Firebase Auth và Firestore
     mAuth = FirebaseAuth.getInstance();
     db = FirebaseFirestore.getInstance();
     currentUser = mAuth.getCurrentUser();
 
-    // Ánh xạ Views từ layout (Sử dụng ID bạn đã cung cấp)
+    // Ánh xạ Views
     tvWelcomeMessage = findViewById(R.id.welcomeText);
     tvHydrationProgress = findViewById(R.id.amountText);
-    tvWaterPercent = findViewById(R.id.a); // <-- ID 'a' có thể nên đổi tên cho dễ hiểu hơn trong XML
+    tvWaterPercent = findViewById(R.id.a);
     tvNextReminderDisplay = findViewById(R.id.reminderTimeText);
     tvLastWaterAmount = findViewById(R.id.waterAmountText);
     progressBarWater = findViewById(R.id.progressCircle);
-    fabAddWater = findViewById(R.id.addButton); // Nút thêm nước
+    fabAddWater = findViewById(R.id.addButton);
+    loadingProgressBar = findViewById(R.id.loading_progress_bar);
 
+    loadGoalCheckStatus();
 
     if (currentUser == null) {
-      // Người dùng chưa đăng nhập
-      Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show();
-      Log.e(TAG, "User is not logged in. Cannot proceed.");
-      // Gán userId giả để test (CẦN XÓA KHI CÓ LOGIN THẬT)
-      // userId = "testUserId";
-      // Hiển thị trạng thái mặc định/chưa đăng nhập
-      updateWelcomeMessage(); // Sẽ hiển thị "Welcome, User! 👋"
-      waterGoal = 0; // Đặt goal về 0 hoặc giá trị mặc định khác
-      currentWaterIntake = 0;
-      updateHydrationUI();
-      updateReminderUI();
-      tvLastWaterAmount.setText("0ml");
-      fabAddWater.setEnabled(false); // Vô hiệu hóa nút thêm nước
+      showLoading(false);
+      handleUserNotLoggedIn();
     } else {
-      // Người dùng đã đăng nhập
       userId = currentUser.getUid();
-      fabAddWater.setEnabled(true); // Bật nút thêm nước
-      // Bắt đầu chuỗi load dữ liệu
+      fabAddWater.setEnabled(true);
+      showLoading(true);
       loadUserProfile();
     }
 
-    // Xử lý sự kiện click nút "+"
     fabAddWater.setOnClickListener(v -> {
-      if (userId == null || userId.isEmpty()) { // Kiểm tra lại userId hợp lệ
+      if (userId == null || userId.isEmpty()) {
         Toast.makeText(this, "Please log in to add water.", Toast.LENGTH_SHORT).show();
         return;
       }
       showAddWaterDialog();
     });
 
-    // Yêu cầu quyền Notification (Android 13+)
     checkAndRequestNotificationPermission();
   }
 
-  // Implement phương thức trừu tượng từ NavigationActivity (giữ nguyên)
   @Override
   protected int getCurrentBottomNavigationItemId() {
     return R.id.navHomeButton;
   }
 
-  // 1. Load thông tin Profile người dùng (lấy goal và tên)
-  private void loadUserProfile() {
-    if (userId == null || userId.isEmpty()) return;
+  private void showLoading(boolean show) {
+    if (loadingProgressBar != null) {
+      loadingProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+    if (fabAddWater != null) {
+      fabAddWater.setEnabled(!show);
+    }
+  }
 
+  private void handleUserNotLoggedIn() {
+    userId = null;
+    userDisplayName = "User";
+    waterGoal = 0;
+    currentWaterIntake = 0;
+    nextReminderTimestamp = 0;
+    updateWelcomeMessage();
+    updateHydrationUI();
+    updateReminderUI();
+    tvLastWaterAmount.setText("0ml");
+    fabAddWater.setEnabled(false);
+    Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show();
+    Log.e(TAG, "User is not logged in.");
+  }
+
+  private void loadUserProfile() {
+    if (userId == null || userId.isEmpty()) {
+      showLoading(false);
+      handleUserNotLoggedIn();
+      return;
+    }
+    Log.d(TAG, "Loading user profile for userId: " + userId);
     DocumentReference userProfileRef = db.collection("users").document(userId);
     userProfileRef.get().addOnSuccessListener(profileSnapshot -> {
-      String tempDisplayName = null; // Biến tạm lưu tên
+      String tempDisplayName = "User"; // Start with default
+      int tempWaterGoal = 2100; // Default goal
 
       if (profileSnapshot.exists()) {
-        Log.d(TAG, "User profile loaded successfully for userId: " + userId);
-        // Lấy waterGoal
-        if (profileSnapshot.contains("waterGoal")) {
-          // Sử dụng get() an toàn hơn getLong() trực tiếp
-          Number goal = profileSnapshot.get("waterGoal", Number.class);
-          if (goal != null) {
-            waterGoal = goal.intValue();
-            Log.d(TAG, "Water Goal set to: " + waterGoal);
-          } else {
-            waterGoal = 2100; // Fallback nếu field tồn tại nhưng là null
-            Log.w(TAG, "waterGoal field is null, using default: " + waterGoal);
-          }
-
+        Log.d(TAG, "User profile loaded successfully.");
+        // Lấy waterGoal (sửa lại field name nếu cần, ví dụ intakeGoalM1)
+        Number goal = profileSnapshot.get("intakeGoalM1", Number.class); // *** KIỂM TRA FIELD NAME NÀY ***
+        if (goal != null && goal.intValue() > 0) {
+          tempWaterGoal = goal.intValue();
         } else {
-          waterGoal = 2100; // Fallback nếu không có field
-          Log.w(TAG, "waterGoal field not found, using default: " + waterGoal);
+          Log.w(TAG, "'intakeGoalM1' field missing, null, or zero. Using default: " + tempWaterGoal);
         }
 
-        // --- Logic lấy tên được cải thiện ---
-        // 1. Ưu tiên lấy 'username' từ Firestore
-        if (profileSnapshot.contains("username")) {
-          String firestoreUsername = profileSnapshot.getString("username");
-          if (firestoreUsername != null && !firestoreUsername.trim().isEmpty()) {
-            tempDisplayName = firestoreUsername.trim();
-            Log.d(TAG, "Using 'username' from Firestore: " + tempDisplayName);
-          } else {
-            Log.w(TAG, "'username' field found in Firestore but is null or empty.");
-          }
-        } else {
-          Log.w(TAG, "'username' field not found in Firestore profile.");
-        }
+        // Lấy tên (Ưu tiên username -> firstName -> Auth displayName -> email)
+        String firestoreUsername = profileSnapshot.getString("username");
+        String firestoreFirstName = profileSnapshot.getString("firstName"); // *** KIỂM TRA FIELD NAME NÀY ***
 
-        // 2. Nếu không có 'username' từ Firestore, thử lấy displayName từ Firebase Auth profile
-        if (tempDisplayName == null && currentUser != null && currentUser.getDisplayName() != null && !currentUser.getDisplayName().trim().isEmpty()) {
+        if (firestoreUsername != null && !firestoreUsername.trim().isEmpty()) {
+          tempDisplayName = firestoreUsername.trim();
+        } else if (firestoreFirstName != null && !firestoreFirstName.trim().isEmpty()) {
+          tempDisplayName = firestoreFirstName.trim();
+        } else if (currentUser != null && currentUser.getDisplayName() != null && !currentUser.getDisplayName().trim().isEmpty()) {
           tempDisplayName = currentUser.getDisplayName().trim();
-          Log.d(TAG, "Using 'displayName' from Firebase Auth profile as fallback: " + tempDisplayName);
+        } else if (currentUser != null && currentUser.getEmail() != null) {
+          tempDisplayName = currentUser.getEmail();
         }
-        // --- Kết thúc cải thiện logic tên ---
+        // Không cần fallback "User" ở đây nữa vì đã khởi tạo
 
       } else {
-        // Hồ sơ người dùng không tồn tại trong Firestore
         Log.w(TAG, "User profile document does not exist for userId: " + userId);
-        waterGoal = 2100; // Dùng goal mặc định
-
-        // Fallback tên: Auth displayName -> email -> "User"
+        // Fallback tên khi profile không tồn tại
         if (currentUser != null && currentUser.getDisplayName() != null && !currentUser.getDisplayName().trim().isEmpty()) {
           tempDisplayName = currentUser.getDisplayName().trim();
+        } else if (currentUser != null && currentUser.getEmail() != null) {
+          tempDisplayName = currentUser.getEmail();
         }
-        // (Không cần fallback email ở đây nếu ưu tiên username/displayName)
       }
 
-      // 3. Nếu vẫn không có tên, fallback dùng email (chỉ khi cần)
-      if (tempDisplayName == null && currentUser != null && currentUser.getEmail() != null) {
-        tempDisplayName = currentUser.getEmail();
-        Log.d(TAG, "Falling back to email address.");
-      }
+      // Gán giá trị cuối cùng
+      userDisplayName = tempDisplayName;
+      waterGoal = tempWaterGoal;
+      Log.d(TAG, "Final userDisplayName: " + userDisplayName + ", Final waterGoal: " + waterGoal);
 
-      // 4. Gán giá trị cuối cùng (nếu vẫn null thì gán "User")
-      userDisplayName = (tempDisplayName != null) ? tempDisplayName : "User";
-      Log.d(TAG, "Final userDisplayName set to: " + userDisplayName);
-
-
-      // Cập nhật lời chào
       updateWelcomeMessage();
-      // Load dữ liệu nước hàng ngày SAU KHI đã có waterGoal và tên
-      loadDailyWaterData();
+      loadDailyWaterData(); // Load dữ liệu nước sau khi có profile
 
     }).addOnFailureListener(e -> {
       Log.e(TAG, "Error getting user profile for userId: " + userId, e);
-      Toast.makeText(this, "Failed to load user profile.", Toast.LENGTH_SHORT).show();
       // Sử dụng giá trị mặc định khi lỗi
       waterGoal = 2100;
-      userDisplayName = "User"; // Tên mặc định khi lỗi
+      userDisplayName = (currentUser != null && currentUser.getDisplayName() != null) ? currentUser.getDisplayName() : "User";
       updateWelcomeMessage();
       loadDailyWaterData(); // Vẫn thử load dữ liệu nước
+      Toast.makeText(this, "Failed to load profile. Using defaults.", Toast.LENGTH_SHORT).show();
     });
   }
 
-  // 2. Load dữ liệu nước uống của ngày hôm nay từ water_tracker
-  private void loadDailyWaterData() {
-    if (userId == null || userId.isEmpty()) return;
 
+  private void loadDailyWaterData() {
+    if (userId == null || userId.isEmpty()) {
+      showLoading(false);
+      return;
+    }
     String todayDate = firestoreDateFormat.format(new Date());
+    Log.d(TAG, "Loading daily water data for " + todayDate);
     DocumentReference dailyLogRef = db.collection("water_tracker").document(userId)
             .collection("daily_logs").document(todayDate);
 
     dailyLogRef.get().addOnSuccessListener(documentSnapshot -> {
-      if (documentSnapshot.exists()) {
-        Log.d(TAG, "Daily water log loaded for date: " + todayDate);
-        Long totalWLong = documentSnapshot.getLong("totalWater");
-        // Gán vào biến int, kiểm tra null trước
-        currentWaterIntake = (totalWLong != null) ? totalWLong.intValue() : 0;
-
-        Long lastALong = documentSnapshot.getLong("lastAddedAmount");
-        // Gán vào biến long, kiểm tra null trước
-        long lastAmount = (lastALong != null) ? lastALong : 0L; // 0L là giá trị long mặc định
-
-        Long nextRLong = documentSnapshot.getLong("nextReminderTimestamp");
-        // Gán vào biến long, kiểm tra null trước
-        nextReminderTimestamp = (nextRLong != null) ? nextRLong : 0L;
-
-
-        tvLastWaterAmount.setText(lastAmount + "ml");
-      } else {
-        // Chưa có record cho ngày hôm nay
-        Log.d(TAG, "No daily water log found for date: " + todayDate + ". Setting defaults.");
-        currentWaterIntake = 0;
-        nextReminderTimestamp = 0;
-        tvLastWaterAmount.setText("0ml");
-      }
-      // Cập nhật UI sau khi có dữ liệu (hoặc biết là chưa có)
-      // Chỉ cập nhật nếu Activity còn tồn tại
       if (!isFinishing() && !isDestroyed()) {
+        if (documentSnapshot.exists()) {
+          currentWaterIntake = documentSnapshot.getLong("totalWater") != null ? documentSnapshot.getLong("totalWater").intValue() : 0;
+          long lastAmount = documentSnapshot.getLong("lastAddedAmount") != null ? documentSnapshot.getLong("lastAddedAmount") : 0L;
+          nextReminderTimestamp = documentSnapshot.getLong("nextReminderTimestamp") != null ? documentSnapshot.getLong("nextReminderTimestamp") : 0L;
+          tvLastWaterAmount.setText(lastAmount + "ml");
+          Log.d(TAG, "Daily log found. Water: " + currentWaterIntake + "ml");
+        } else {
+          Log.d(TAG, "No daily log found for today.");
+          currentWaterIntake = 0;
+          nextReminderTimestamp = 0;
+          tvLastWaterAmount.setText("0ml");
+        }
         updateHydrationUI();
         updateReminderUI();
+        checkGoalCompletionAndNavigate(); // Kiểm tra mục tiêu sau khi load xong
+        showLoading(false);
       }
     }).addOnFailureListener(e -> {
-      Log.w(TAG, "Error getting daily water log for date: " + todayDate, e);
-      // Xử lý lỗi (ví dụ: hiển thị giá trị mặc định)
+      Log.w(TAG, "Error getting daily water log for " + todayDate, e);
       if (!isFinishing() && !isDestroyed()) {
         currentWaterIntake = 0;
         nextReminderTimestamp = 0;
         tvLastWaterAmount.setText("0ml");
         updateHydrationUI();
         updateReminderUI();
-        Toast.makeText(this, "Failed to load daily water data.", Toast.LENGTH_SHORT).show();
+        showLoading(false);
+        Toast.makeText(this, "Failed to load daily data.", Toast.LENGTH_SHORT).show();
       }
     });
   }
 
-
-  // Hiển thị Dialog thêm nước
   private void showAddWaterDialog() {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     LayoutInflater inflater = this.getLayoutInflater();
-    // *** KIỂM TRA LẠI TÊN FILE LAYOUT NÀY ***
     View dialogView = inflater.inflate(R.layout.dialog_add_reminder, null);
     builder.setView(dialogView);
 
-    // Đảm bảo các ID này tồn tại trong dialog_add_reminder.xml
     EditText etWaterAmount = dialogView.findViewById(R.id.etWaterAmount);
     TextView tvSelectedTime = dialogView.findViewById(R.id.tvSelectedTime);
-
-    // --- Phần xử lý dialog giữ nguyên ---
     final int[] selectedHour = {-1};
     final int[] selectedMinute = {-1};
+
     Calendar calendar = Calendar.getInstance();
     calendar.add(Calendar.HOUR_OF_DAY, 1);
     selectedHour[0] = calendar.get(Calendar.HOUR_OF_DAY);
     selectedMinute[0] = calendar.get(Calendar.MINUTE);
     tvSelectedTime.setText(String.format(Locale.getDefault(), "%02d:%02d", selectedHour[0], selectedMinute[0]));
+
     tvSelectedTime.setOnClickListener(v -> {
       Calendar now = Calendar.getInstance();
-      int currentHour = now.get(Calendar.HOUR_OF_DAY);
-      int currentMinute = now.get(Calendar.MINUTE);
+      int initialHour = (selectedHour[0] != -1) ? selectedHour[0] : now.get(Calendar.HOUR_OF_DAY);
+      int initialMinute = (selectedMinute[0] != -1) ? selectedMinute[0] : now.get(Calendar.MINUTE);
+
       TimePickerDialog timePickerDialog = new TimePickerDialog(this,
               (view, hourOfDay, minute) -> {
                 selectedHour[0] = hourOfDay;
                 selectedMinute[0] = minute;
                 tvSelectedTime.setText(String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute));
-              },
-              selectedHour[0] != -1 ? selectedHour[0] : currentHour,
-              selectedMinute[0] != -1 ? selectedMinute[0] : currentMinute,
-              true);
+              }, initialHour, initialMinute, true);
       timePickerDialog.show();
     });
+
+    builder.setTitle("Add Water & Set Reminder");
     builder.setPositiveButton("Add", (dialog, which) -> {
       String amountStr = etWaterAmount.getText().toString();
       if (!amountStr.isEmpty()) {
@@ -328,7 +311,8 @@ public class StatusActivity extends NavigationActivity {
             Toast.makeText(this, "Please enter a positive amount.", Toast.LENGTH_SHORT).show();
             return;
           }
-          if (selectedHour[0] != -1 && selectedMinute[0] != -1) {
+          if (selectedHour[0] != -1) { // Chỉ cần giờ hợp lệ vì phút luôn có
+            showLoading(true);
             saveWaterRecordAndScheduleReminder(amountToAdd, selectedHour[0], selectedMinute[0]);
           } else {
             Toast.makeText(this, "Please select a reminder time.", Toast.LENGTH_SHORT).show();
@@ -341,123 +325,179 @@ public class StatusActivity extends NavigationActivity {
       }
     });
     builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-    AlertDialog dialog = builder.create();
-    dialog.show();
-    // --- Kết thúc phần xử lý dialog ---
+    builder.create().show();
   }
 
-  // Lưu dữ liệu vào water_tracker và đặt lịch thông báo
+
   private void saveWaterRecordAndScheduleReminder(int waterAmount, int reminderHour, int reminderMinute) {
     if (userId == null || userId.isEmpty()) {
+      showLoading(false);
       Toast.makeText(this, "Cannot save data. User not identified.", Toast.LENGTH_SHORT).show();
       return;
     }
 
-    // --- Phần tính toán và lưu Firestore giữ nguyên ---
     int newTotalWater = currentWaterIntake + waterAmount;
-    Calendar reminderCalendar = Calendar.getInstance();
-    reminderCalendar.set(Calendar.HOUR_OF_DAY, reminderHour);
-    reminderCalendar.set(Calendar.MINUTE, reminderMinute);
-    reminderCalendar.set(Calendar.SECOND, 0);
-    reminderCalendar.set(Calendar.MILLISECOND, 0);
-    if (reminderCalendar.getTimeInMillis() <= System.currentTimeMillis()) {
-      reminderCalendar.add(Calendar.DAY_OF_YEAR, 1);
-      Log.d(TAG,"Reminder time is in the past for today, scheduling for tomorrow.");
-    }
-    long reminderTimestamp = reminderCalendar.getTimeInMillis();
+    long currentTimeMillis = System.currentTimeMillis();
+    long reminderTimestamp = calculateReminderTimestamp(reminderHour, reminderMinute);
+
     String todayDate = firestoreDateFormat.format(new Date());
     DocumentReference dailyLogRef = db.collection("water_tracker").document(userId)
             .collection("daily_logs").document(todayDate);
+
     Map<String, Object> waterData = new HashMap<>();
     waterData.put("totalWater", newTotalWater);
     waterData.put("lastAddedAmount", waterAmount);
-    waterData.put("lastAddedTimestamp", System.currentTimeMillis());
+    waterData.put("lastAddedTimestamp", currentTimeMillis);
     waterData.put("nextReminderTimestamp", reminderTimestamp);
-    waterData.put("dailyGoal", waterGoal); // Lưu goal của ngày đó
+    waterData.put("dailyGoal", waterGoal);
+
     dailyLogRef.set(waterData, SetOptions.merge())
             .addOnSuccessListener(aVoid -> {
-              Log.d(TAG, "Daily water log successfully written for date: " + todayDate);
-              Toast.makeText(StatusActivity.this, "Water added!", Toast.LENGTH_SHORT).show();
-              // Cập nhật biến cục bộ và UI (chỉ nếu activity còn tồn tại)
+              Log.d(TAG, "Daily water log successfully written/merged for " + todayDate);
               if (!isFinishing() && !isDestroyed()) {
                 currentWaterIntake = newTotalWater;
                 nextReminderTimestamp = reminderTimestamp;
                 tvLastWaterAmount.setText(waterAmount + "ml");
                 updateHydrationUI();
                 updateReminderUI();
-                // Đặt lịch thông báo
-                scheduleNotification(reminderTimestamp);
+                Toast.makeText(StatusActivity.this, waterAmount + "ml added!", Toast.LENGTH_SHORT).show();
+
+                scheduleNotification(reminderTimestamp); // Đặt lịch sau khi lưu thành công
+                checkGoalCompletionAndNavigate(); // Kiểm tra mục tiêu sau khi cập nhật
+                showLoading(false);
               }
             })
             .addOnFailureListener(e -> {
-              Log.w(TAG, "Error writing daily water log for date: " + todayDate, e);
+              Log.w(TAG, "Error writing/merging daily water log for " + todayDate, e);
               if (!isFinishing() && !isDestroyed()) {
+                showLoading(false);
                 Toast.makeText(StatusActivity.this, "Failed to save data.", Toast.LENGTH_SHORT).show();
               }
             });
-    // --- Kết thúc phần lưu Firestore ---
   }
 
-  // --- Cập nhật các thành phần UI ---
+  private long calculateReminderTimestamp(int hour, int minute) {
+    Calendar reminderCalendar = Calendar.getInstance();
+    reminderCalendar.set(Calendar.HOUR_OF_DAY, hour);
+    reminderCalendar.set(Calendar.MINUTE, minute);
+    reminderCalendar.set(Calendar.SECOND, 0);
+    reminderCalendar.set(Calendar.MILLISECOND, 0);
+    if (reminderCalendar.getTimeInMillis() <= System.currentTimeMillis()) {
+      reminderCalendar.add(Calendar.DAY_OF_YEAR, 1); // Schedule for tomorrow if time has passed today
+    }
+    return reminderCalendar.getTimeInMillis();
+  }
 
   private void updateWelcomeMessage() {
-    // Đảm bảo tvWelcomeMessage không null trước khi setText
     if (tvWelcomeMessage != null) {
       tvWelcomeMessage.setText("Welcome, " + userDisplayName + "! 👋");
     }
   }
 
   private void updateHydrationUI() {
-    // Đảm bảo các view không null
-    if (tvHydrationProgress == null || tvWaterPercent == null || progressBarWater == null) {
-      Log.e(TAG, "One or more hydration UI elements are null!");
+    if (tvHydrationProgress == null || tvWaterPercent == null || progressBarWater == null) return;
+
+    if (waterGoal <= 0) {
+      tvHydrationProgress.setText(String.format(Locale.getDefault(), "%d/--ml", currentWaterIntake));
+      tvWaterPercent.setText("0%");
+      progressBarWater.setMax(100);
+      progressBarWater.setProgress(0);
       return;
     }
 
+    int progressPercent = (int) (((float) currentWaterIntake / waterGoal) * 100);
+    progressPercent = Math.min(progressPercent, 100);
+    progressPercent = Math.max(progressPercent, 0);
+
+    int progressValue = Math.min(currentWaterIntake, waterGoal);
+    progressValue = Math.max(progressValue, 0);
+
     tvHydrationProgress.setText(String.format(Locale.getDefault(), "%d/%dml", currentWaterIntake, waterGoal));
-
-    int progressPercent = 0;
-    int progressValue = 0;
-
-    if (waterGoal > 0) {
-      progressPercent = (int) (((float) currentWaterIntake / waterGoal) * 100);
-      progressPercent = Math.min(progressPercent, 100); // Không vượt quá 100%
-      progressValue = Math.min(currentWaterIntake, waterGoal); // Giá trị cho progress bar
-    } else {
-      // Xử lý trường hợp goal = 0 (ví dụ: chưa load xong hoặc user đặt = 0)
-      progressPercent = 0;
-      progressValue = 0;
-      Log.w(TAG, "Water goal is 0, setting progress to 0.");
-    }
-
-
     tvWaterPercent.setText(String.format(Locale.getDefault(), "%d%%", progressPercent));
-
-    // Cập nhật ProgressBar (bỏ comment và sửa lại)
-    progressBarWater.setMax(waterGoal > 0 ? waterGoal : 100); // Đặt max, tránh max=0
+    progressBarWater.setMax(waterGoal);
     progressBarWater.setProgress(progressValue);
-
   }
 
   private void updateReminderUI() {
-    // Đảm bảo view không null
     if (tvNextReminderDisplay == null) return;
 
     if (nextReminderTimestamp > 0 && nextReminderTimestamp > System.currentTimeMillis()) {
-      Date reminderDate = new Date(nextReminderTimestamp);
-      tvNextReminderDisplay.setText(timeFormat.format(reminderDate));
+      tvNextReminderDisplay.setText(timeFormat.format(new Date(nextReminderTimestamp)));
     } else {
       tvNextReminderDisplay.setText("--:--");
     }
   }
 
+  private void checkGoalCompletionAndNavigate() {
+    String todayDate = dateCheckFormat.format(new Date());
 
-  // --- Xử lý thông báo và quyền (Giữ nguyên phần logic) ---
+    if (!todayDate.equals(lastGoalCheckDate)) {
+      Log.i(TAG, "New day (" + todayDate + "). Resetting goal completion status.");
+      goalStatusShownToday = false;
+      lastGoalCheckDate = todayDate;
+      saveGoalCheckStatus();
+    }
+
+    Log.d(TAG, "Checking goal: current=" + currentWaterIntake + ", goal=" + waterGoal + ", shownToday=" + goalStatusShownToday);
+
+    if (!goalStatusShownToday && waterGoal > 0 && currentWaterIntake >= waterGoal) {
+      Log.i(TAG, "Goal achieved! Navigating to GoalStatusActivity (Complete).");
+      navigateToGoalStatus(true);
+      goalStatusShownToday = true;
+      saveGoalCheckStatus();
+    }
+  }
+
+  private void navigateToGoalStatus(boolean achieved) {
+    if (isFinishing() || isDestroyed()) return;
+    Log.d(TAG, "Navigating to GoalStatusActivity, achieved: " + achieved);
+    Intent intent = new Intent(StatusActivity.this, GoalStatusActivity.class);
+    intent.putExtra(GoalStatusActivity.EXTRA_GOAL_ACHIEVED, achieved);
+    intent.putExtra(GoalStatusActivity.EXTRA_USERNAME, userDisplayName);
+    startActivity(intent);
+  }
+
+  private void saveGoalCheckStatus() {
+    SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+    SharedPreferences.Editor editor = prefs.edit();
+    editor.putString(KEY_LAST_GOAL_CHECK_DATE, lastGoalCheckDate);
+    editor.putBoolean(KEY_GOAL_STATUS_SHOWN, goalStatusShownToday);
+    editor.apply();
+    Log.d(TAG, "Saved goal check status: date=" + lastGoalCheckDate + ", shown=" + goalStatusShownToday);
+  }
+
+  private void loadGoalCheckStatus() {
+    SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+    lastGoalCheckDate = prefs.getString(KEY_LAST_GOAL_CHECK_DATE, "");
+    goalStatusShownToday = prefs.getBoolean(KEY_GOAL_STATUS_SHOWN, false);
+    Log.d(TAG, "Loaded goal check status: date=" + lastGoalCheckDate + ", shown=" + goalStatusShownToday);
+
+    String todayDate = dateCheckFormat.format(new Date());
+    if (!todayDate.equals(lastGoalCheckDate)) {
+      if (!lastGoalCheckDate.isEmpty()) {
+        Log.i(TAG, "Loaded status is for a previous day ("+lastGoalCheckDate+"). Resetting 'shown' flag for today ("+todayDate+").");
+      }
+      goalStatusShownToday = false;
+      lastGoalCheckDate = todayDate;
+      saveGoalCheckStatus();
+    }
+  }
 
   private void scheduleNotification(long triggerTimestamp) {
+    if (triggerTimestamp <= System.currentTimeMillis()) {
+      Log.w(TAG, "Attempted to schedule notification for a past time. Skipping.");
+      return;
+    }
+
     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
     Intent intent = new Intent(this, ReminderBroadcastReceiver.class);
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    int requestCode = 101; // Consistent request code for water reminder
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(
+            this,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+    );
 
     if (alarmManager == null) {
       Log.e(TAG, "AlarmManager is null.");
@@ -465,80 +505,114 @@ public class StatusActivity extends NavigationActivity {
       return;
     }
 
+    // Check exact alarm permission for Android 12+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
       if (!alarmManager.canScheduleExactAlarms()) {
-        Log.w(TAG, "SCHEDULE_EXACT_ALARM permission needed.");
-        new AlertDialog.Builder(this)
-                .setTitle("Permission Required")
-                .setMessage("To ensure timely reminders, this app needs permission to schedule exact alarms. Please grant this permission in the next screen.")
-                .setPositiveButton("Go to Settings", (dialog, which) -> {
-                  Intent settingsIntent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                  if (settingsIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(settingsIntent);
-                  } else {
-                    Log.e(TAG,"Could not resolve Intent: Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM");
-                    Toast.makeText(StatusActivity.this, "Could not open permission settings.", Toast.LENGTH_SHORT).show();
-                  }
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                  Toast.makeText(StatusActivity.this, "Reminder cannot be set without permission.", Toast.LENGTH_SHORT).show();
-                  dialog.dismiss();
-                })
-                .show();
-        return; // Dừng lại
+        Log.w(TAG, "Missing SCHEDULE_EXACT_ALARM permission.");
+        showExactAlarmPermissionDialog(); // Show dialog to request permission
+        return; // Stop here, wait for user interaction
       }
     }
 
+    // Schedule the exact alarm
     try {
       alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTimestamp, pendingIntent);
-      Log.d(TAG, "Alarm scheduled for: " + new Date(triggerTimestamp));
+      Log.i(TAG, "Exact alarm scheduled successfully for: " + new Date(triggerTimestamp));
     } catch (SecurityException se) {
-      Log.e(TAG, "SecurityException scheduling alarm.", se);
-      Toast.makeText(this, "Could not schedule reminder due to permissions.", Toast.LENGTH_LONG).show();
+      Log.e(TAG, "SecurityException scheduling exact alarm.", se);
+      Toast.makeText(this, "Could not schedule reminder due to security restrictions.", Toast.LENGTH_LONG).show();
+    } catch (Exception e) {
+      Log.e(TAG, "Error scheduling exact alarm.", e);
+      Toast.makeText(this, "An error occurred while scheduling the reminder.", Toast.LENGTH_SHORT).show();
     }
   }
 
+  // Helper method to show dialog for exact alarm permission
+  private void showExactAlarmPermissionDialog() {
+    new AlertDialog.Builder(this)
+            .setTitle("Permission Required")
+            .setMessage("To set precise reminders, please allow the app to schedule exact alarms in the system settings.")
+            .setPositiveButton("Go to Settings", (dialog, which) -> {
+              Intent settingsIntent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+              try {
+                startActivity(settingsIntent);
+              } catch (Exception e) {
+                Log.e(TAG, "Could not open ACTION_REQUEST_SCHEDULE_EXACT_ALARM settings", e);
+                Toast.makeText(StatusActivity.this, "Could not open permission settings.", Toast.LENGTH_SHORT).show();
+              }
+            })
+            .setNegativeButton("Cancel", (dialog, which) -> {
+              Toast.makeText(StatusActivity.this, "Reminders may not be exact without permission.", Toast.LENGTH_LONG).show();
+              dialog.dismiss();
+            })
+            .show();
+  }
+
+
   private void checkAndRequestNotificationPermission() {
-    // Giữ nguyên logic kiểm tra và yêu cầu quyền POST_NOTIFICATIONS
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
       if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-        Log.d(TAG, "Requesting POST_NOTIFICATIONS permission.");
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_POST_NOTIFICATIONS);
+        if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+          // Show rationale dialog
+          new AlertDialog.Builder(this)
+                  .setTitle("Notification Permission Needed")
+                  .setMessage("This permission is required to show water reminders.")
+                  .setPositiveButton("OK", (dialog, which) -> requestNotificationPermission())
+                  .setNegativeButton("Cancel", (dialog, which) -> Toast.makeText(this, "Notifications disabled.", Toast.LENGTH_SHORT).show())
+                  .show();
+        } else {
+          // Request directly
+          requestNotificationPermission();
+        }
       } else {
         Log.d(TAG,"POST_NOTIFICATIONS permission already granted.");
       }
     }
   }
 
+  private void requestNotificationPermission() {
+    ActivityCompat.requestPermissions(this,
+            new String[]{Manifest.permission.POST_NOTIFICATIONS},
+            REQUEST_CODE_POST_NOTIFICATIONS);
+  }
+
+  // --- SỬA LỖI: Thêm @NonNull annotations ---
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    // Giữ nguyên logic xử lý kết quả quyền
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     if (requestCode == REQUEST_CODE_POST_NOTIFICATIONS) {
       if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        Log.d(TAG,"POST_NOTIFICATIONS permission granted by user.");
+        Log.i(TAG,"POST_NOTIFICATIONS permission granted.");
         Toast.makeText(this, "Notification permission granted!", Toast.LENGTH_SHORT).show();
       } else {
-        Log.w(TAG,"POST_NOTIFICATIONS permission denied by user.");
-        Toast.makeText(this, "Notifications disabled. Reminders might not work.", Toast.LENGTH_LONG).show();
+        Log.w(TAG,"POST_NOTIFICATIONS permission denied.");
+        Toast.makeText(this, "Notifications may not work without permission.", Toast.LENGTH_LONG).show();
       }
     }
   }
 
-  // --- (Optional) Hủy bỏ báo thức (Giữ nguyên) ---
   private void cancelAlarm() {
     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
     Intent intent = new Intent(this, ReminderBroadcastReceiver.class);
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    int requestCode = 101; // Use the same request code as when setting the alarm
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(
+            this,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+    );
 
     if (alarmManager != null) {
-      alarmManager.cancel(pendingIntent);
-      pendingIntent.cancel();
-      Log.d(TAG, "Alarm cancelled.");
-      // Cập nhật UI nếu cần
-      if (!isFinishing() && !isDestroyed()) {
-        nextReminderTimestamp = 0;
-        updateReminderUI();
+      try {
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+        Log.i(TAG, "Alarm with requestCode " + requestCode + " cancelled.");
+        if (!isFinishing() && !isDestroyed()) {
+          nextReminderTimestamp = 0;
+          updateReminderUI();
+        }
+      } catch (Exception e) {
+        Log.e(TAG,"Error cancelling alarm", e);
       }
     }
   }

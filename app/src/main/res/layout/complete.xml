@@ -8,20 +8,35 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context=".MainActivity">
+    tools:context=".RewardActivity"> <!-- Cập nhật context nếu cần -->
+
+    <!-- *** NÚT BACK ARROW ĐƯỢC THÊM VÀO ĐÂY *** -->
+    <ImageButton
+        android:id="@+id/backButtonComplete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_arrow_back_24"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:padding="8dp"
+    android:contentDescription="@string/back_button_desc"
+    app:tint="?attr/colorOnSurface"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="0dp"/>
 
     <TextView
         android:id="@+id/today_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="Today - 16 June"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginTop="16dp"
+    android:text="Today - 16 June"
+    android:textColor="@color/black"
+    android:textSize="22sp"
+    android:textStyle="bold"
+    app:layout_constraintTop_toBottomOf="@id/backButtonComplete"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/greeting"
@@ -45,7 +60,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- RelativeLayout bên trong ConstraintLayout vẫn ổn, không cần đổi trừ khi có yêu cầu -->
+    <!-- RelativeLayout bên trong ConstraintLayout -->
     <RelativeLayout
         android:id="@+id/congratulations_card"
         android:layout_width="0dp"
@@ -72,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/congratulations_title"
             android:layout_marginTop="8dp"
-            android:text="Harry has archived \n your goal today"
+            android:text="Harry has achieved \n your goal today"
             android:textColor="#4A4A4A"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -107,7 +122,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/go_to_home"
+        android:id="@+id/buttonShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -119,8 +134,5 @@
         app:layout_constraintTop_toBottomOf="@id/congratulations_card"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Bao gồm Bottom Navigation -->
-    <include layout="@layout/bottom_navigation_layout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,254 +1,339 @@
-package com.example.canvas; // Hoặc package của bạn
+package com.example.canvas; // Thay bằng package của bạn
 
+// Import các lớp cần thiết
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent; // Giữ lại nếu cần cho các Intent khác (không phải nav)
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-// Xóa: import android.widget.Button; // Không cần nút nav nữa
+import android.view.ViewGroup;
+// import android.widget.EditText; // Không cần nữa
+import android.widget.FrameLayout;
+// import android.widget.RadioButton; // Không cần nữa
+// import android.widget.RadioGroup;   // Không cần nữa
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable; // Thêm cái này cho savedInstanceState
 import androidx.appcompat.app.AlertDialog;
-// Import lớp cơ sở điều hướng của bạn
-// Đảm bảo tên lớp này là chính xác (NavigationActivity hoặc BaseNavigationActivity)
-import com.example.canvas.NavigationActivity; // <<< SỬ DỤNG TÊN LỚP CƠ SỞ ĐÚNG
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+// Import Firebase
+import com.example.canvas.utils.SoundUtils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
-// 1. Kế thừa từ lớp Activity cơ sở chứa logic điều hướng
-public class SettingsActivity extends NavigationActivity { // <<< SỬ DỤNG TÊN LỚP CƠ SỞ ĐÚNG
+public class SettingsActivity extends NavigationActivity {
 
-  // --- Fields từ logic ngôn ngữ ---
   private static final String TAG = "SettingsActivity";
-  private static final String PREFS_NAME = "SettingsPrefs";
-  private static final String PREF_LANGUAGE = "selected_language";
 
-  private RelativeLayout languageLayout;
-  private TextView languageValue;
+  // --- Views ---
+  private TextView tvReminderSoundValue;
+  private TextView tvLanguageValue;
+  private RelativeLayout layoutReminderSound;
+  private RelativeLayout layoutLanguage;
 
-  private String[] languageDisplayNames;
-  private String[] languageCodes = {"en", "vi"}; // Mã ngôn ngữ
-  private String currentLanguageCode; // Mã ngôn ngữ đang được sử dụng
+  // --- Firebase ---
+  private FirebaseAuth mAuth;
+  private FirebaseFirestore db;
+  private FirebaseUser currentUser;
+  private DocumentReference userDocRef;
 
-  // Xóa: private Button navHomeButton; // Không cần nữa
+  // --- Language Settings (SharedPreferences) ---
+  public static final String PREFS_NAME = "SettingsPrefs";
+  public static final String PREF_LANGUAGE = "selected_language";
+  private final String[] languageCodes = {"en", "vi"};
+  private String currentLanguageCode;
+
+  // --- Sound Settings ---
+  // Key dùng chung cho SharedPreferences và Firestore (nếu lưu cả 2)
+  public static final String PREF_REMINDER_SOUND = "selected_reminder_sound"; // << Giữ 1 khai báo public
+  private String currentSelectedSoundName;
+  private MediaPlayer mediaPlayer;
+
+
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
-    // --- QUAN TRỌNG: Áp dụng ngôn ngữ đã lưu TRƯỚC khi setContentView ---
-    loadLocale();
-    // ---
+    loadLocale(); // Load ngôn ngữ (SharedPreferences) trước
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.settings); // Đảm bảo tên layout đúng là activity_settings.xml
 
-    super.onCreate(savedInstanceState); // Gọi super sau loadLocale nhưng trước setContentView
+    setupBottomNavigation();
 
-    // --- Đặt layout XML tĩnh cho Activity này ---
-    try {
-      setContentView(R.layout.settings); // <<< SỬ DỤNG LAYOUT CHO SETTINGS
-    } catch (Exception e) {
-      Log.e(TAG, "Error setting content view. Check R.layout.settings exists and is valid.", e);
-      Toast.makeText(this, "Layout Error (Settings)", Toast.LENGTH_LONG).show();
+    mAuth = FirebaseAuth.getInstance();
+    db = FirebaseFirestore.getInstance();
+    currentUser = mAuth.getCurrentUser();
+
+    if (currentUser == null) {
+      showToast("Please login to view settings.");
       finish();
       return;
     }
 
-    // --- Gọi phương thức setup của lớp cơ sở ĐIỀU HƯỚNG SAU setContentView ---
-    try {
-      setupBottomNavigation();
-    } catch (Exception e) {
-      Log.e(TAG, "Error setting up bottom navigation in SettingsActivity.", e);
-      Toast.makeText(this, "Navigation Error (Settings)", Toast.LENGTH_LONG).show();
-    }
+    String userId = currentUser.getUid();
+    userDocRef = db.collection("users").document(userId);
 
-    // --- Khởi tạo và xử lý logic cài đặt ngôn ngữ ---
-    languageDisplayNames = new String[]{"English", "Tiếng Việt"}; // Có thể lấy từ R.string
 
-    languageLayout = findViewById(R.id.languageLayout);
-    languageValue = findViewById(R.id.languageValue);
 
-    // Kiểm tra null cho View trước khi sử dụng
-    if (languageLayout == null || languageValue == null) {
-      Log.e(TAG, "Error finding language layout views. Check IDs in R.layout.settings.");
-      Toast.makeText(this, "UI Error (Settings)", Toast.LENGTH_SHORT).show();
-      // Có thể không cần finish(), nhưng chức năng ngôn ngữ sẽ không hoạt động
-    } else {
-      // currentLanguageCode đã được thiết lập trong loadLocale()
-      updateLanguageValueText(); // Cập nhật TextView hiển thị
-
-      languageLayout.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          showLanguageSelectionDialog();
-        }
-      });
-    }
-
-    // --- XÓA LOGIC getIntent và setOnClickListener cho navHomeButton ---
-        /*
-        Intent intent = getIntent();
-        String userId = intent.getStringExtra("userId");
-        navHomeButton = findViewById(R.id.navHomeButton);
-        navHomeButton.setOnClickListener(v -> { ... });
-        */
-    // Nếu cần userId, truy cập biến `currentUserId` được kế thừa từ lớp cơ sở
+    setupViews();
+    setupListeners();
+    loadUserSettings(); // Tải cài đặt sound từ Firestore
+    updateLanguageValueText(); // Cập nhật text ngôn ngữ từ biến đã load
 
     Log.d(TAG, "SettingsActivity created. Current language code: " + currentLanguageCode);
   }
 
-  // 2. Implement phương thức trừu tượng để BaseNavigationActivity biết mục nào đang active
   @Override
   protected int getCurrentBottomNavigationItemId() {
-    // Trả về ID của mục "Settings" trong tệp menu.xml của bạn
-    return R.id.navSettingsButton; // <<< Đảm bảo ID này khớp với menu item "Settings"
+    // *** KIỂM TRA LẠI ID TRONG FILE MENU BOTTOM NAVIGATION CỦA BẠN ***
+    // Dựa trên file strings.xml bạn cung cấp, ID có thể là nav_settings
+    return R.id.navSettingsButton; // <<< Đảm bảo ID này đúng
   }
 
-  // --- Các phương thức xử lý ngôn ngữ (giữ nguyên từ phiên bản đầu) ---
+  // Khởi tạo map âm thanh
 
-  private void updateLanguageValueText() {
-    if (languageValue == null || languageCodes == null || languageDisplayNames == null) return;
-    String displayName = "Unknown";
-    for (int i = 0; i < languageCodes.length; i++) {
-      if (languageCodes[i].equals(currentLanguageCode)) {
-        displayName = languageDisplayNames[i];
-        break;
-      }
-    }
-    languageValue.setText(displayName);
+
+  private void setupViews() {
+    // Chỉ ánh xạ các View còn lại
+    layoutReminderSound = findViewById(R.id.reminderSoundLayout); // ID của RelativeLayout cha
+    layoutLanguage = findViewById(R.id.languageLayout);
+
+    tvReminderSoundValue = findViewById(R.id.reminderSoundValue); // TextView giá trị Sound
+    tvLanguageValue = findViewById(R.id.languageValue);          // TextView giá trị Language
   }
 
-  private void showLanguageSelectionDialog() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle(getString(R.string.language)); // Nên dùng R.string.language
+  private void setupListeners() {
+    // Chỉ đặt listener cho các mục còn lại
+    layoutReminderSound.setOnClickListener(v -> showSoundSelectionDialog());
+    layoutLanguage.setOnClickListener(v -> showLanguageSelectionDialog());
+  }
 
-    int currentLanguageIndex = -1;
-    for (int i = 0; i < languageCodes.length; i++) {
-      if (languageCodes[i].equals(currentLanguageCode)) {
-        currentLanguageIndex = i;
-        break;
-      }
-    }
-
-    builder.setSingleChoiceItems(languageDisplayNames, currentLanguageIndex, new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
-        String selectedLanguageCode = languageCodes[which];
-        if (!selectedLanguageCode.equals(currentLanguageCode)) {
-          setLocale(selectedLanguageCode);
-          dialog.dismiss();
-          // Khởi động lại Activity để áp dụng ngôn ngữ mới cho UI của nó
-          recreate(); // This re-runs onCreate with the new configuration
-          Toast.makeText(SettingsActivity.this, "Language changed", Toast.LENGTH_SHORT).show();
-        } else {
-          dialog.dismiss();
+  // Load cài đặt từ Firestore (chỉ sound)
+  private void loadUserSettings() {
+    userDocRef.get().addOnSuccessListener(documentSnapshot -> {
+      if (documentSnapshot.exists()) {
+        currentSelectedSoundName = documentSnapshot.getString("reminderSound");
+        // Sử dụng default từ SoundUtils
+        if (currentSelectedSoundName == null || !SoundUtils.getSoundMap().containsKey(currentSelectedSoundName)) {
+          currentSelectedSoundName = SoundUtils.DEFAULT_REMINDER_SOUND_NAME;
         }
+        tvReminderSoundValue.setText(currentSelectedSoundName);
+      } else {
+        displayDefaultSettings();
       }
+    }).addOnFailureListener(e -> {
+      Log.e(TAG, "Error loading user settings", e);
+      showToast("Error loading settings: " + e.getMessage());
+      displayDefaultSettings();
+    });
+  }
+
+  // Hiển thị các giá trị mặc định (sound và language)
+  private void displayDefaultSettings() {
+    updateLanguageValueText();
+    currentSelectedSoundName = SoundUtils.DEFAULT_REMINDER_SOUND_NAME;
+    tvReminderSoundValue.setText(currentSelectedSoundName);
+  }
+
+
+  // --- Dialog chọn Âm thanh ---
+  private void showSoundSelectionDialog() {
+    // Lấy tên sound từ SoundUtils
+    final String[] soundNames = SoundUtils.getSoundMap().keySet().toArray(new String[0]);
+    int currentSoundIndex = -1;
+    // ... (Tìm index như cũ) ...
+    for (int i = 0; i < soundNames.length; i++) {
+      if (soundNames[i].equals(currentSelectedSoundName)) { currentSoundIndex = i; break;}
+    }
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(getString(R.string.reminder_sound));
+    final int[] checkedItem = {currentSoundIndex};
+
+    builder.setSingleChoiceItems(soundNames, currentSoundIndex, (dialog, which) -> {
+      String selectedName = soundNames[which];
+      checkedItem[0] = which;
+      playSound(selectedName); // Phát thử
     });
 
-    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
-    AlertDialog dialog = builder.create();
-    dialog.show();
-  }
-
-  // Áp dụng Locale mới và lưu vào SharedPreferences
-  private void setLocale(String langCode) {
-    if (langCode == null || langCode.isEmpty()) {
-      Log.w(TAG, "Attempted to set null or empty language code.");
-      return;
-    }
-    Log.i(TAG, "Setting locale to: " + langCode);
-    persistData(this, PREF_LANGUAGE, langCode);
-
-    Locale locale = new Locale(langCode);
-    Locale.setDefault(locale);
-
-    Resources res = getResources();
-    Configuration conf = res.getConfiguration();
-
-    // Nên dùng context của Application để cập nhật nếu có thể,
-    // nhưng cập nhật context của Activity cũng hoạt động cho recreate()
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      conf.setLocale(locale);
-      // createConfigurationContext(conf); // Cập nhật context cho Activity này
-    } else {
-      conf.locale = locale;
-    }
-    res.updateConfiguration(conf, res.getDisplayMetrics());
-
-    // Cập nhật biến global sau khi đã áp dụng thành công
-    currentLanguageCode = langCode;
-  }
-
-  // Load Locale đã lưu khi Activity khởi tạo (gọi trước setContentView)
-  private void loadLocale() {
-    String language = getPersistedData(this, PREF_LANGUAGE);
-    String targetLanguageCode = null;
-
-    if (language != null && !language.isEmpty()) {
-      targetLanguageCode = language;
-      Log.d(TAG, "Found saved language: " + targetLanguageCode);
-    } else {
-      // Không có ngôn ngữ đã lưu, dùng default hệ thống (và kiểm tra hỗ trợ)
-      String deviceLanguage = Locale.getDefault().getLanguage();
-      Log.d(TAG, "No saved language, device default: " + deviceLanguage);
-      boolean supported = false;
-      for (String code : languageCodes) {
-        if (code.equals(deviceLanguage)) {
-          supported = true;
-          targetLanguageCode = deviceLanguage;
-          break;
+    builder.setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
+      int finalSelectedIndex = checkedItem[0];
+      if (finalSelectedIndex != -1) {
+        String finalSelectedSoundName = soundNames[finalSelectedIndex];
+        if (!finalSelectedSoundName.equals(currentSelectedSoundName)) {
+          saveSettingToFirestore("reminderSound", finalSelectedSoundName);
+          persistData(this, PREF_REMINDER_SOUND, finalSelectedSoundName); // Lưu vào Prefs
+          currentSelectedSoundName = finalSelectedSoundName;
+          tvReminderSoundValue.setText(currentSelectedSoundName);
         }
       }
-      if (!supported) {
-        targetLanguageCode = "en"; // Fallback về English nếu default không hỗ trợ
-        Log.d(TAG, "Device language not supported, falling back to: " + targetLanguageCode);
-      }
-    }
-
-    // Chỉ gọi setLocale nếu ngôn ngữ mục tiêu khác với ngôn ngữ hiện tại của config
-    Configuration currentConfig = getResources().getConfiguration();
-    Locale currentLocale;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      currentLocale = currentConfig.getLocales().get(0);
-    } else {
-      currentLocale = currentConfig.locale;
-    }
-
-    if (targetLanguageCode != null && !targetLanguageCode.equals(currentLocale.getLanguage())) {
-      Log.i(TAG, "Applying locale on load: " + targetLanguageCode);
-      setLocale(targetLanguageCode); // Áp dụng locale
-    } else {
-      Log.d(TAG, "Locale already set or no change needed on load. Current code: " + targetLanguageCode);
-      // Đảm bảo biến global được cập nhật đúng ngay cả khi không gọi setLocale
-      currentLanguageCode = targetLanguageCode;
-    }
-
+      stopSound();
+      dialog.dismiss();
+    });
+    // ... (Negative button và Dismiss listener như cũ) ...
+    builder.setNegativeButton(getString(android.R.string.cancel), (d, w) -> { stopSound(); d.cancel(); });
+    builder.setOnDismissListener(d -> stopSound());
+    builder.create().show();
   }
 
-  // ---- Helper functions for SharedPreferences (giữ nguyên) ----
+  // --- Hàm phát thử âm thanh (Giữ nguyên) ---
+  private void playSound(String soundName) {
+    stopSound();
+    // Gọi hàm tiện ích từ SoundUtils
+    Uri soundUri = SoundUtils.getSoundUri(this, soundName);
+    Log.d(TAG, "Attempting to play sound: " + soundName + ", URI: " + soundUri);
+    if (soundUri != null) { // Chỉ cần kiểm tra Uri khác null
+      mediaPlayer = new MediaPlayer();
+      try {
+        mediaPlayer.setDataSource(this, soundUri);
+        mediaPlayer.setOnPreparedListener(mp -> { /* ... */ try { mp.start(); } catch (Exception e) {/*...*/} });
+        mediaPlayer.setOnCompletionListener(mp -> stopSound());
+        mediaPlayer.setOnErrorListener((mp, w, e) -> { /* ... */ stopSound(); return true; });
+        mediaPlayer.prepareAsync();
+      } catch (Exception e) {
+        Log.e(TAG, "Error setting/preparing MediaPlayer", e);
+        showToast("Error loading sound");
+        stopSound();
+      }
+    } else { Log.w(TAG,"Sound URI is null, not playing."); }
+  }
+
+  // --- Hàm dừng và giải phóng MediaPlayer (Giữ nguyên) ---
+  private void stopSound() {
+    if (mediaPlayer != null) {
+      try {
+        if (mediaPlayer.isPlaying()) { mediaPlayer.stop(); }
+        mediaPlayer.release();
+        Log.d(TAG,"MediaPlayer stopped and released.");
+      } catch (Exception e) { Log.e(TAG,"Error stopping/releasing MP", e); }
+      finally { mediaPlayer = null; }
+    }
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    stopSound(); // Dừng âm thanh khi activity dừng
+  }
+
+  // Hàm Lưu cài đặt vào Firestore (chỉ sound)
+  private void saveSettingToFirestore(String fieldName, Object value) {
+    Map<String, Object> settingUpdate = new HashMap<>();
+    settingUpdate.put(fieldName, value);
+    userDocRef.set(settingUpdate, SetOptions.merge()) // Dùng merge
+            .addOnSuccessListener(aVoid -> Log.d(TAG, "Firestore setting '" + fieldName + "' updated."))
+            .addOnFailureListener(e -> {
+              Log.e(TAG, "Error saving Firestore setting '" + fieldName + "'", e);
+              showToast("Failed to save setting: " + e.getMessage());
+              // Có thể cần reload lại giá trị cũ từ Firestore nếu lưu thất bại
+              // loadUserSettings(); // Cân nhắc có nên load lại không
+            });
+  }
+
+  // --- Các hàm xử lý ngôn ngữ (Giữ nguyên) ---
+  private void updateLanguageValueText() {
+    if (tvLanguageValue == null || currentLanguageCode == null) return;
+    String displayName;
+    switch (currentLanguageCode) {
+      case "vi": displayName = getString(R.string.vietnamese); break;
+      case "en": default: displayName = getString(R.string.english); break;
+    }
+    tvLanguageValue.setText(displayName);
+  }
+  private void showLanguageSelectionDialog() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(getString(R.string.language));
+    final String[] displayNamesToShow = {getString(R.string.english), getString(R.string.vietnamese)};
+    int currentLanguageIndex = -1;
+    for (int i = 0; i < languageCodes.length; i++) if (languageCodes[i].equals(currentLanguageCode)) { currentLanguageIndex = i; break; }
+    builder.setSingleChoiceItems(displayNamesToShow, currentLanguageIndex, (dialog, which) -> {
+      String selectedLanguageCode = languageCodes[which];
+      if (!selectedLanguageCode.equals(currentLanguageCode)) {
+        setLocale(selectedLanguageCode);
+        dialog.dismiss();
+        recreate();
+        showToast("Language changed");
+      } else { dialog.dismiss(); }
+    });
+    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
+    builder.create().show();
+  }
+  private void setLocale(String langCode) {
+    if (langCode == null || langCode.isEmpty()) return;
+    Log.i(TAG, "Setting locale to: " + langCode);
+    persistData(this, PREF_LANGUAGE, langCode);
+    Locale locale = new Locale(langCode);
+    Locale.setDefault(locale);
+    Resources res = getResources();
+    Configuration conf = res.getConfiguration();
+    DisplayMetrics dm = res.getDisplayMetrics();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) conf.setLocale(locale);
+    else conf.locale = locale;
+    res.updateConfiguration(conf, dm);
+    currentLanguageCode = langCode;
+  }
+  private void loadLocale() {
+    String savedLanguage = getPersistedData(this, PREF_LANGUAGE);
+    String targetLanguageCode = null;
+    boolean needsUpdate = false;
+    if (savedLanguage != null && !savedLanguage.isEmpty()) { targetLanguageCode = savedLanguage;}
+    else {
+      String deviceLanguage = Locale.getDefault().getLanguage();
+      boolean supported = false;
+      for (String code : languageCodes) if (code.equals(deviceLanguage)) { supported = true; targetLanguageCode = deviceLanguage; break; }
+      if (!supported) targetLanguageCode = "en";
+      persistData(this, PREF_LANGUAGE, targetLanguageCode);
+    }
+    Configuration currentConfig = getResources().getConfiguration();
+    Locale currentLocale = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? currentConfig.getLocales().get(0) : currentConfig.locale;
+    if (!targetLanguageCode.equals(currentLocale.getLanguage())) {
+      needsUpdate = true;
+      Log.i(TAG, "Applying locale on load: " + targetLanguageCode);
+      Locale locale = new Locale(targetLanguageCode);
+      Locale.setDefault(locale);
+      Resources res = getResources();
+      Configuration conf = new Configuration(currentConfig);
+      DisplayMetrics dm = res.getDisplayMetrics();
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) conf.setLocale(locale);
+      else conf.locale = locale;
+      res.updateConfiguration(conf, dm);
+    }
+    currentLanguageCode = targetLanguageCode;
+    Log.d(TAG, "loadLocale finished. Current code: " + currentLanguageCode + ", Applied update: " + needsUpdate);
+  }
   public static void persistData(Context context, String key, String value) {
     SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-    SharedPreferences.Editor editor = prefs.edit();
-    editor.putString(key, value);
-    editor.apply();
+    prefs.edit().putString(key, value).apply();
   }
-
   public static String getPersistedData(Context context, String key) {
     SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-    return prefs.getString(key, null); // Trả về null nếu không tìm thấy
+    return prefs.getString(key, null);
   }
 
-  // ---- Ghi chú về attachBaseContext ----
-  // Để áp dụng ngôn ngữ ngay lập tức cho TOÀN BỘ ứng dụng và TRƯỚC KHI
-  // bất kỳ Activity nào được tạo, cách tốt nhất là override attachBaseContext
-  // trong một BaseActivity chung (mà tất cả các Activity khác kế thừa)
-  // hoặc trong lớp Application của bạn. Xem comment trong mã gốc của bạn.
-  // Phương pháp loadLocale() trong onCreate chỉ đảm bảo Activity *này*
-  // được cập nhật đúng khi nó khởi động hoặc được recreate().
+  // --- Tiện ích ---
+  private void showToast(String message) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+  }
+  // private void setLoadingState(boolean isLoading) { ... }
 }

@@ -12,9 +12,9 @@
         android:title="@string/nav_progress" />
 
     <item
-        android:id="@+id/navTypeButton"
-        android:icon="@drawable/water_full_24px"
-        android:title="@string/nav_type" />
+        android:id="@+id/navProfileButton"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/nav_profile" />
 
     <item
         android:id="@+id/navRewardsButton"

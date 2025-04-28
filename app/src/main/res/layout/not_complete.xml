@@ -105,8 +105,9 @@
             android:src="@drawable/trophy" />
     </RelativeLayout>
 
+    <!-- Bao gồm Bottom Navigation -->
     <Button
-        android:id="@+id/go_to_home"
+        android:id="@+id/buttonGoToHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -115,11 +116,10 @@
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/congratulations_card"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/congratulations_card" />
 
-    <!-- Bao gồm Bottom Navigation -->
-    <include layout="@layout/bottom_navigation_layout"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
