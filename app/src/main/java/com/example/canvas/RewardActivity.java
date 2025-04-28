@@ -66,7 +66,7 @@ public class RewardActivity extends AppCompatActivity { // Kế thừa AppCompat
 
         if (currentUser == null) {
             Log.e(TAG, "User not logged in. Cannot display rewards.");
-            Toast.makeText(this, "Please log in to view rewards.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.login_required_rewards), Toast.LENGTH_LONG).show();
             // Có thể điều hướng về màn hình Login hoặc hiển thị thông báo lỗi
             finish(); // Đóng activity này
             return;
@@ -168,26 +168,30 @@ public class RewardActivity extends AppCompatActivity { // Kế thừa AppCompat
         // Ánh xạ View từ complete.xml
         TextView tvTodayDate = findViewById(R.id.today_date);
         TextView tvGreeting = findViewById(R.id.greeting);
-        TextView tvCongratsMessage = findViewById(R.id.congratulations_message);
+        TextView tvCongratsMessage = findViewById(R.id.congratulations_message); // ID này có thể cần đổi nếu khác layout oops
         Button btnShare = findViewById(R.id.buttonShare);
         ImageView emoji = findViewById(R.id.emoji);
+        ImageButton backButton = findViewById(R.id.backButtonComplete); // Đảm bảo ID này tồn tại trong complete.xml
 
+        // Kiểm tra null cho tất cả View
+        if (tvTodayDate == null || tvGreeting == null || tvCongratsMessage == null || btnShare == null || emoji == null || backButton == null) {
+            Log.e(TAG, "populateCompleteLayout: One or more views are null!");
+            Toast.makeText(this, "Error displaying layout.", Toast.LENGTH_SHORT).show();
+            return; // Không tiếp tục nếu thiếu view
+        }
 
-        // *** THÊM PHẦN NÀY: Ánh xạ và xử lý nút Back ***
-        ImageButton backButton = findViewById(R.id.backButtonComplete);
-        backButton.setOnClickListener(v -> {
-            Log.d(TAG, "Back button on complete screen clicked.");
-            // Đóng Activity hiện tại để quay lại màn hình trước đó
-            finish();
-        });
-        // Cập nhật nội dung
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMMM", Locale.getDefault());
+        // Xử lý nút Back
+        backButton.setOnClickListener(v -> finish());
+
+        // Cập nhật nội dung sử dụng String Resources
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMMM", Locale.getDefault()); // Locale.getDefault() sẽ tự đổi theo ngôn ngữ máy
         String currentDate = sdf.format(new Date());
-        tvTodayDate.setText("Today - " + currentDate);
+        tvTodayDate.setText(getString(R.string.reward_today_date_format, currentDate)); // Định dạng với ngày
 
-        tvGreeting.setText("Hi, " + userDisplayName + "!");
-        tvCongratsMessage.setText(userDisplayName + " has achieved\nyour goal today");
-        emoji.setImageResource(R.drawable.ic_happy); // Đảm bảo icon tồn tại
+        tvGreeting.setText(getString(R.string.reward_greeting_format, userDisplayName)); // Định dạng với tên
+        tvCongratsMessage.setText(getString(R.string.congrats_message_format, userDisplayName)); // Định dạng với tên
+        emoji.setImageResource(R.drawable.ic_happy);
+        btnShare.setText(getString(R.string.congrats_share_button)); // Đặt text cho nút
 
         // Xử lý nút Share
         btnShare.setOnClickListener(v -> shareAchievement());
@@ -197,24 +201,37 @@ public class RewardActivity extends AppCompatActivity { // Kế thừa AppCompat
         // Ánh xạ View từ not_complete.xml
         TextView tvTodayDate = findViewById(R.id.today_date);
         TextView tvGreeting = findViewById(R.id.greeting);
-        TextView tvOopsMessage = findViewById(R.id.congratulations_message);
+        TextView tvOopsMessage = findViewById(R.id.oops_message); // ID này có thể khác trong layout not_complete.xml
         Button btnGoHome = findViewById(R.id.buttonGoToHome);
         ImageView emoji = findViewById(R.id.emoji);
+        // ImageButton backButton = findViewById(R.id.backButtonNotComplete); // Ánh xạ nếu có nút back riêng
 
-        // Cập nhật nội dung
+        // Kiểm tra null cho tất cả View
+        if (tvTodayDate == null || tvGreeting == null || tvOopsMessage == null || btnGoHome == null || emoji == null /* || backButton == null */) {
+            Log.e(TAG, "populateNotCompleteLayout: One or more views are null!");
+            Toast.makeText(this, "Error displaying layout.", Toast.LENGTH_SHORT).show();
+            return; // Không tiếp tục nếu thiếu view
+        }
+
+        // Xử lý nút Back (nếu có)
+        /*
+        if (backButton != null) {
+             backButton.setOnClickListener(v -> finish());
+        }
+        */
+
+        // Cập nhật nội dung sử dụng String Resources
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMMM", Locale.getDefault());
         String currentDate = sdf.format(new Date());
-        tvTodayDate.setText("Today - " + currentDate);
+        tvTodayDate.setText(getString(R.string.reward_today_date_format, currentDate));
 
-        tvGreeting.setText("Hi, " + userDisplayName + "!");
-        tvOopsMessage.setText(userDisplayName + " has not achieved\nyour goal today");
-        emoji.setImageResource(R.drawable.ic_sad); // Đảm bảo icon tồn tại
+        tvGreeting.setText(getString(R.string.reward_greeting_format, userDisplayName));
+        tvOopsMessage.setText(getString(R.string.oops_message_format, userDisplayName));
+        emoji.setImageResource(R.drawable.ic_sad);
+        btnGoHome.setText(getString(R.string.oops_go_to_home_button)); // Đặt text cho nút
 
         // Xử lý nút Go To Home
-        btnGoHome.setOnClickListener(v -> {
-            // Đóng Activity này để quay lại màn hình trước đó
-            finish();
-        });
+        btnGoHome.setOnClickListener(v -> finish());
     }
 
     private void showLoading(boolean show) {
@@ -239,20 +256,26 @@ public class RewardActivity extends AppCompatActivity { // Kế thừa AppCompat
 
     // --- Hàm xử lý Share (Giống trong GoalStatusActivity) ---
     private void shareAchievement() {
-        String shareText = "🎉 Hooray! " + userDisplayName + " just reached the daily water intake goal! Staying hydrated. 💧 #WaterGoalAchieved #HydrationHero";
+        // *** Sử dụng String Resources ***
+        String shareText = getString(R.string.share_achievement_text_format, userDisplayName);
+        String subject = getString(R.string.share_achievement_subject_format, userDisplayName);
+        String chooserTitle = getString(R.string.share_achievement_title);
+        String noAppMessage = getString(R.string.share_no_app_found);
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, userDisplayName + "'s Hydration Goal Reached!");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 
-        Intent chooserIntent = Intent.createChooser(shareIntent, "Share Achievement via");
+        Intent chooserIntent = Intent.createChooser(shareIntent, chooserTitle);
 
-        if (chooserIntent.resolveActivity(getPackageManager()) != null) {
+        // --- SỬA LỖI: Kiểm tra PackageManager an toàn hơn ---
+        PackageManager pm = getPackageManager();
+        if (chooserIntent.resolveActivity(pm) != null) {
             startActivity(chooserIntent);
         } else {
             Log.e(TAG, "No app available to handle share intent.");
-            Toast.makeText(this, "No suitable app found for sharing.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, noAppMessage, Toast.LENGTH_SHORT).show();
         }
     }
 }

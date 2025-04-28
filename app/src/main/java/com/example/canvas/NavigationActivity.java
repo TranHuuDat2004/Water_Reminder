@@ -1,5 +1,6 @@
 package com.example.canvas; // Thay thế bằng tên gói của bạn
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log; // Thêm Log để debug (tùy chọn)
@@ -14,15 +15,23 @@ import com.google.firebase.auth.FirebaseUser;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.example.canvas.utils.LocaleHelper; // <-- THÊM IMPORT NÀY
 
 public abstract class NavigationActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
     protected BottomNavigationView bottomNavigationView;
     protected FirebaseAuth mAuth; // Thêm biến FirebaseAuth
     protected String currentUserId; // Biến để lưu trữ userId hiện tại
+    // *** THÊM PHƯƠNG THỨC NÀY ***
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        // Áp dụng ngôn ngữ đã lưu TRƯỚC KHI context được gắn vào Activity
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance(); // Khởi tạo FirebaseAuth
     }

@@ -8,8 +8,9 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="24dp"
-    tools:context=".LoginActivity">
+    tools:context=".SignupActivity"> <!-- Đảm bảo context đúng -->
 
+    <!-- ID: btnClose -->
     <ImageView
         android:id="@+id/btnClose"
         android:layout_width="24dp"
@@ -19,25 +20,28 @@
         android:src="@drawable/ic_close"
         android:contentDescription="@string/close" />
 
+    <!-- ID: tvTitle -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Signup"
+        android:text="@string/register_title"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#212121"
         android:layout_marginBottom="8dp" />
 
+    <!-- ID: tvSubtitle -->
     <TextView
         android:id="@+id/tvSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/securely_login"
+        android:text="@string/register_subtitle"
         android:textSize="16sp"
         android:textColor="#757575"
         android:layout_marginBottom="24dp" />
 
+    <!-- Username Input -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,15 +49,14 @@
         android:orientation="horizontal"
         android:padding="12dp"
         android:layout_marginBottom="16dp">
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_person_24"
+            android:src="@drawable/ic_profile"
             android:layout_marginEnd="8dp"
-            android:contentDescription="@string/email_icon"
+            android:contentDescription="@string/username_icon"
             app:tint="#9E9E9E" />
-
+        <!-- ID: etUsername -->
         <EditText
             android:id="@+id/etUsername"
             android:layout_width="0dp"
@@ -61,13 +64,13 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:hint="@string/username"
-            android:inputType="textEmailAddress"
+            android:inputType="textPersonName"
             android:textSize="16sp"
             android:textColor="#212121"
             android:textColorHint="#9E9E9E" />
-
     </LinearLayout>
 
+    <!-- Email Input -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,7 +78,6 @@
         android:orientation="horizontal"
         android:padding="12dp"
         android:layout_marginBottom="16dp">
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +85,7 @@
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/email_icon"
             app:tint="#9E9E9E" />
-
+        <!-- ID: etEmail -->
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="0dp"
@@ -95,9 +97,9 @@
             android:textSize="16sp"
             android:textColor="#212121"
             android:textColorHint="#9E9E9E" />
-
     </LinearLayout>
 
+    <!-- Phone Number Input -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -105,15 +107,14 @@
         android:orientation="horizontal"
         android:padding="12dp"
         android:layout_marginBottom="16dp">
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/call_24px"
+            android:src="@drawable/ic_phone"
             android:layout_marginEnd="8dp"
-            android:contentDescription="@string/email_icon"
+            android:contentDescription="@string/phone_icon"
             app:tint="#9E9E9E" />
-
+        <!-- ID: etPhone -->
         <EditText
             android:id="@+id/etPhone"
             android:layout_width="0dp"
@@ -121,21 +122,20 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:hint="@string/phone_number"
-            android:inputType="textEmailAddress"
+            android:inputType="phone"
             android:textSize="16sp"
             android:textColor="#212121"
             android:textColorHint="#9E9E9E" />
-
     </LinearLayout>
 
+    <!-- Password Input -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_rounded_input"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:layout_marginBottom="8dp">
-
+        android:layout_marginBottom="16dp">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/password_icon"
             app:tint="#9E9E9E" />
-
+        <!-- ID: etPassword -->
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="0dp"
@@ -155,7 +155,7 @@
             android:textSize="16sp"
             android:textColor="#212121"
             android:textColorHint="#9E9E9E" />
-
+        <!-- ID: btnTogglePassword -->
         <ImageView
             android:id="@+id/btnTogglePassword"
             android:layout_width="wrap_content"
@@ -163,96 +163,59 @@
             android:src="@drawable/ic_visibility_off"
             android:contentDescription="@string/toggle_password"
             app:tint="#9E9E9E" />
-
     </LinearLayout>
 
+    <!-- ID: progressBar (optional, uncomment in Java if used) -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp" />
 
+    <!-- ID: btnSignUp -->
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#42A5F5"
-        android:text="@string/sign_up"
+        android:text="@string/sign_up_button"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:paddingVertical="14dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="24dp" />
 
+    <!-- Social Login Buttons Removed/Commented Out -->
+    <!--
+    <LinearLayout ... > ... </LinearLayout>
+    -->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/or_continue_with"
-            android:textSize="14sp"
-            android:textColor="#757575"
-            android:layout_marginBottom="16dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnGoogleLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/google"
-                android:drawablePadding="8dp"
-                android:backgroundTint="#42A5F5"
-
-                android:textColor="#ffffff"
-                android:textAllCaps="false"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="12dp"
-                android:layout_marginEnd="8dp" />
-
-            <Button
-                android:id="@+id/btnFacebookLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/facebook"
-                android:backgroundTint="#42A5F5"
-                android:drawablePadding="8dp"
-                android:textColor="#ffffff"
-                android:textAllCaps="false"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="12dp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
+    <!-- Link to Login -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp">
-
+        android:layout_marginTop="32dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/have_an_account"
+            android:text="@string/already_have_account"
             android:textSize="14sp"
             android:textColor="#757575" />
-
+        <!-- ID: tvLogIn -->
         <TextView
-            android:id="@+id/tvSignUp"
+            android:id="@+id/tvLogIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login"
+            android:text="@string/log_in"
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="#1E88E5"
             android:layout_marginStart="4dp" />
-
     </LinearLayout>
 
+    <!-- Terms and Privacy Text -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

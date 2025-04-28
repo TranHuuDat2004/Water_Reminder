@@ -7,33 +7,38 @@
     android:background="#FFFFFF"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="16dp">
+    android:paddingTop="16dp"
+    tools:context=".RewardActivity">
 
-    <TextView
+
+<TextView
         android:id="@+id/today_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:text="Today - 16 June"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="@string/reward_today_date_format" 
+    android:textColor="@color/black"
+    android:textSize="22sp"
+    android:textStyle="bold"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    tools:text="Today - 16 June"/>
 
     <TextView
         android:id="@+id/greeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Hi, Aashifa Sheikh,"
-        android:textColor="#4A4A4A"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/today_date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="@string/reward_greeting_format" 
+    android:textColor="#4A4A4A"
+    android:textSize="18sp"
+    app:layout_constraintTop_toBottomOf="@id/today_date"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    tools:text="Hi, Aashifa Sheikh,"/>
 
+    <!-- ImageView emoji giữ nguyên src, sẽ set từ code -->
     <ImageView
         android:id="@+id/emoji"
         android:layout_width="100dp"
@@ -44,82 +49,81 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- RelativeLayout bên trong vẫn giữ nguyên -->
     <RelativeLayout
-        android:id="@+id/congratulations_card"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/rounded_corners_blue_light"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/emoji"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:id="@+id/oops_card" 
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp"
+    android:background="@drawable/rounded_corners_blue_light"
+    android:padding="16dp"
+    app:layout_constraintTop_toBottomOf="@id/emoji"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/congratulations_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Oops!"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/oops_title" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/oops_title" 
+    android:textColor="#000000"
+    android:textSize="24sp"
+    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/congratulations_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/congratulations_title"
-            android:layout_marginTop="8dp"
-            android:text="Harry has not archive \n your goal today"
-            android:textColor="#4A4A4A"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/oops_message" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/oops_title"
+    android:layout_marginTop="8dp"
+    android:text="@string/oops_message_format" 
+    android:textColor="#4A4A4A"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    tools:text="Harry has not achieved \nyour goal today"/>
 
-        <TextView
-            android:id="@+id/congratulations_quote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/congratulations_message"
-            android:layout_marginTop="8dp"
-            android:text="Success is not final, failure is not fatal: it is the courage to continue that count."
-            android:textColor="#808080"
-            android:textSize="16sp" />
+    <TextView
+        android:id="@+id/oops_quote" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/oops_message"
+    android:layout_marginTop="8dp"
+    android:text="@string/oops_quote" 
+    android:textColor="#808080"
+    android:textSize="16sp" />
 
-        <ImageView
-            android:id="@+id/confetti"
-            android:layout_width="71dp"
-            android:layout_height="74dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/confetti" />
+    <!-- ImageView confetti giữ nguyên -->
+    <ImageView
+        android:id="@+id/confetti"
+        android:layout_width="71dp"
+        android:layout_height="74dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/confetti" />
 
-        <ImageView
-            android:id="@+id/trophy"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@id/congratulations_quote"
-            android:layout_marginTop="17dp"
-            android:src="@drawable/trophy" />
-    </RelativeLayout>
+    <!-- ImageView trophy giữ nguyên -->
+    <ImageView
+        android:id="@+id/trophy"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/oops_quote"
+        android:layout_marginTop="17dp"
+        android:src="@drawable/trophy" />
+</RelativeLayout>
 
-    <!-- Bao gồm Bottom Navigation -->
-    <Button
-        android:id="@+id/buttonGoToHome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="#00AEEF"
-        android:text="Go to Home"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/congratulations_card" />
+<Button
+android:id="@+id/buttonGoToHome"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="24dp"
+android:backgroundTint="#00AEEF"
+android:text="@string/oops_go_to_home_button" 
+    android:textColor="#FFFFFF"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/oops_card" /> <!-- Đổi constraint nếu ID card thay đổi -->
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

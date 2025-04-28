@@ -13,4 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-node.modules
+node_modules

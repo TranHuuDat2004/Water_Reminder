@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
       setContentView(R.layout.signup);
       etUsername = findViewById(R.id.etUsername);
       etPhone = findViewById(R.id.etPhone);
-      btnLogin = findViewById(R.id.btnLogin);
+      btnSignUp = findViewById(R.id.btnSignUp);
       tvTitle = findViewById(R.id.tvTitle);
     } else {
       setContentView(R.layout.login);
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
     etEmail = findViewById(R.id.etEmail);
     etPassword = findViewById(R.id.etPassword);
-    btnLogin = findViewById(R.id.btnLogin);
+    btnSignUp = findViewById(R.id.btnSignUp);
     mAuth = FirebaseAuth.getInstance();
 
     // Initialize Firebase Realtime Database

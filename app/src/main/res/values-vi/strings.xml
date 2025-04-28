@@ -152,4 +152,111 @@
     <string name="nav_settings">Cài đặt</string>
     <string name="back_button_desc">Trở về</string>
 
+
+    <!-- Status Activity Strings -->
+    <string name="status_welcome_message">Chào mừng, %1$s! 👋</string>
+    <string name="status_hydration_subtext">Hãy luôn uống đủ nước mỗi ngày nhé. 💧</string> <!-- Hoặc "Nhớ uống đủ nước. 💧" -->
+    <string name="status_todays_record_title">Bản ghi hôm nay</string>
+    <string name="status_add_button_description">Thêm lượng nước uống</string>
+    <string name="status_next_reminder_label">Nhắc nhở tiếp theo</string>
+    <string name="status_water_label">Lượng nước đã tiêu thụ</string>
+
+    <!-- Progress Fragment/Activity Strings (Vietnamese) -->
+    <string name="progress_title">Lượng nước tiêu thụ</string>
+    <string name="progress_date_range_loading">Đang tải...</string>
+    <string name="progress_day_mon">Hai</string> <!-- Hoặc T2 -->
+    <string name="progress_day_tue">Ba</string>  <!-- Hoặc T3 -->
+    <string name="progress_day_wed">Tư</string>  <!-- Hoặc T4 -->
+    <string name="progress_day_thu">Năm</string> <!-- Hoặc T5 -->
+    <string name="progress_day_fri">Sáu</string> <!-- Hoặc T6 -->
+    <string name="progress_day_sat">Bảy</string> <!-- Hoặc T7 -->
+    <string name="progress_day_sun">CN</string>   <!-- Hoặc CN -->
+
+
+    <!-- Rewards Activity/Fragment Strings (Vietnamese) -->
+    <string name="reward_today_date_format">Hôm nay - %1$s</string>
+    <string name="reward_greeting_format">Chào, %1$s,</string>
+    <string name="reward_congratulations_title">Chúc mừng!</string>
+    <string name="reward_congratulations_message_format">%1$s đã hoàn thành \nmục tiêu hôm nay</string>
+    <string name="reward_congratulations_quote">"Bạn có thể đạt được mọi thứ trong cuộc sống nếu bạn giúp đủ người khác đạt được điều họ muốn."</string> <!-- Đã dịch quote -->
+    <string name="reward_share_button">Chia sẻ</string>
+
+    <!-- Oops Screen Strings (Vietnamese) -->
+    <string name="oops_title">Tiếc quá!</string> <!-- Hoặc "Ối!" -->
+    <string name="oops_message_format">%1$s chưa hoàn thành \nmục tiêu hôm nay</string>
+    <string name="oops_quote">"Thành công không phải là cuối cùng, thất bại không phải là chí mạng: lòng can đảm để tiếp tục mới là điều quan trọng."</string> <!-- Đã dịch quote -->
+    <string name="oops_go_to_home_button">Về trang chủ</string>
+
+
+    <!-- Profile Activity/Fragment Strings (Vietnamese) -->
+    <string name="profile_title">Hồ sơ của tôi</string>
+    <string name="profile_label_first_name">Tên</string>
+    <string name="profile_label_last_name">Họ</string>
+    <string name="profile_label_email_address">Địa chỉ Email</string>
+    <string name="profile_label_age">Tuổi</string>
+    <string name="profile_label_gender">Giới tính</string>
+    <string name="profile_gender_male">Nam</string>
+    <string name="profile_gender_female">Nữ</string>
+    <string name="profile_gender_other">Khác</string>
+    <string name="profile_edit_button_desc">Chỉnh sửa Hồ sơ</string>
+    <string name="profile_close_button_desc">Đóng Hồ sơ</string>
+
+    <!-- Registration Activity Strings (Vietnamese) -->
+
+    <string name="register_title">Tạo tài khoản</string> <!-- Hoặc "Đăng ký" -->
+    <string name="register_subtitle">Tạo tài khoản để bắt đầu.</string>
+
+    <string name="confirm_password">Xác nhận Mật khẩu</string>
+
+    <string name="sign_up_button">Đăng ký</string>
+    <string name="already_have_account">Đã có tài khoản?</string>
+
+    <string name="edit_profile_title">Chỉnh sửa Hồ sơ</string>
+
+    <string name="edit_profile_save_button">Lưu</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="phone_icon">Biểu tượng Điện thoại</string> <!-- THÊM DÒNG NÀY -->
+    <string name="username_icon">Biểu tượng Tên đăng nhập</string> <!-- THÊM DÒNG NÀY -->
+
+
+
+    <!-- Rewards Activity/Fragment Strings (Vietnamese - Bổ sung) -->
+    <string name="error_user_not_logged_in">Vui lòng đăng nhập để xem phần thưởng.</string>
+    <string name="default_username">Bạn</string> <!-- Tên mặc định tiếng Việt -->
+    <string name="share_achievement_title">Mục tiêu uống nước của %1$s đã đạt!</string>
+    <string name="share_achievement_text">🎉 Hoan hô! %1$s vừa đạt mục tiêu uống nước hàng ngày! Nhớ uống đủ nước. 💧 #DatMucTieuUongNuoc</string>
+    <string name="share_achievement_via">Chia sẻ thành tích qua</string>
+    <string name="error_no_sharing_app">Không tìm thấy ứng dụng phù hợp để chia sẻ.</string>
+
+
+
+    <string name="logout_confirmation_title">Đăng xuất</string>
+    <string name="logout_confirmation_message">Bạn có chắc chắn muốn đăng xuất không?</string>
+    <string name="error_please_login_first">Vui lòng đăng nhập trước.</string>
+    <string name="language_changed_toast">Đã thay đổi ngôn ngữ</string>
+    <string name="error_loading_settings">Lỗi tải cài đặt</string>
+
+    <!-- Signup Activity Specific Strings (Vietnamese) -->
+    <string name="error_fill_all_fields">Vui lòng điền đầy đủ thông tin</string>
+    <string name="error_registration_failed_no_user">Đăng ký thất bại: Không thể lấy thông tin người dùng.</string>
+    <string name="error_registration_failed">Đăng ký thất bại</string>
+    <string name="registration_successful">Đăng ký người dùng thành công!</string>
+    <string name="error_saving_user_data">Lưu dữ liệu người dùng thất bại</string>
+
+    <!-- Strings specifically used in RewardActivity.java -->
+    <string name="login_required_rewards">Vui lòng đăng nhập để xem phần thưởng.</string>
+
+
+    <!-- Complete Layout specific strings (used in populateCompleteLayout) -->
+    <string name="congrats_message_format">%1$s đã hoàn thành\nmục tiêu hôm nay</string> <!-- %1$s = tên người dùng -->
+    <string name="congrats_share_button">Chia sẻ</string>
+
+    <!-- Share function strings -->
+
+    <string name="share_no_app_found">Không tìm thấy ứng dụng phù hợp để chia sẻ.</string>
+    <string name="share_achievement_subject_format">Mục tiêu Uống nước của %1$s Đã đạt!</string> <!-- %1$s = tên người dùng -->
+    <string name="share_achievement_text_format">🎉 Hoan hô! %1$s vừa đạt mục tiêu uống nước hàng ngày! Luôn đủ nước. 💧 #DatMucTieuUongNuoc #AnhHungHydrat</string> <!-- %1$s = tên người dùng -->
+
+    <!-- General Error/Info Messages -->
+    <string name="error_displaying_layout">Lỗi hiển thị giao diện.</string>
 </resources>

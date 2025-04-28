@@ -27,16 +27,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -276,8 +272,8 @@ public class StatusActivity extends NavigationActivity {
     View dialogView = inflater.inflate(R.layout.dialog_add_reminder, null);
     builder.setView(dialogView);
 
-    EditText etWaterAmount = dialogView.findViewById(R.id.etWaterAmount);
-    TextView tvSelectedTime = dialogView.findViewById(R.id.tvSelectedTime);
+    EditText etWaterAmount = dialogView.findViewById(R.id.waterInput);
+    TextView tvSelectedTime = dialogView.findViewById(R.id.timePicker);
     final int[] selectedHour = {-1};
     final int[] selectedMinute = {-1};
 

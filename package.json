@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "firebase-admin": "^13.3.0"
+  }
+}

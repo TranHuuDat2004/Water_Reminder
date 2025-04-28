@@ -5,7 +5,7 @@
     android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProgressFragment"> <!-- Thay .fragments.ProgressFragment bằng đường dẫn đúng -->
+    tools:context=".ProgressFragment"> <!-- Hoặc đường dẫn đúng đến Fragment/Activity của bạn -->
 
     <!-- Tiêu đề "Water Consumption" -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,14 +23,14 @@
             android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Water Consumption"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@string/progress_title"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Bộ chọn ngày -->
@@ -60,14 +60,15 @@
             android:id="@+id/dateRangeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loading..."
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/buttonNext"
-            app:layout_constraintStart_toEndOf="@id/buttonPrev"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@string/progress_date_range_loading"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/buttonNext"
+        app:layout_constraintStart_toEndOf="@id/buttonPrev"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="19/03 - 25/03"/> <!-- tools:text để xem trước -->
 
         <Button
             android:id="@+id/buttonNext"
@@ -103,268 +104,266 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dateSelectorLayout">
 
-    <!-- Thứ Hai -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="vertical">
+        <!-- Thứ Hai -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/valueMon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            tools:text="1.2L"
-            android:visibility="invisible"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="11sp" />
+            <TextView
+                android:id="@+id/valueMon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                tools:text="1.2L"
+                android:visibility="invisible"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="11sp" />
 
-        <View
-            android:id="@+id/barMon"
-            android:layout_width="25dp"
-            android:layout_height="1dp"
-        android:background="#00AEEF" />
+            <View
+                android:id="@+id/barMon"
+                android:layout_width="25dp"
+                android:layout_height="1dp"
+                android:background="#00AEEF" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="Mon"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/progress_day_mon"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
-    </LinearLayout>
+        </LinearLayout>
 
-    <!-- Thứ Ba -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="vertical">
+        <!-- Thứ Ba -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/valueTue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            tools:text="0.8L"
-            android:visibility="invisible"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="11sp" />
+            <TextView
+                android:id="@+id/valueTue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                tools:text="0.8L"
+                android:visibility="invisible"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="11sp" />
 
-        <View
-            android:id="@+id/barTue"
-            android:layout_width="25dp"
-            android:layout_height="1dp"
-            android:background="#00AEEF" />
+            <View
+                android:id="@+id/barTue"
+                android:layout_width="25dp"
+                android:layout_height="1dp"
+                android:background="#00AEEF" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="Tue"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/progress_day_tue"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
-    </LinearLayout>
+        </LinearLayout>
 
-    <!-- Thứ Tư -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="vertical">
+        <!-- Thứ Tư -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/valueWed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            tools:text="1.0L"
-            android:visibility="invisible"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="11sp" />
+            <TextView
+                android:id="@+id/valueWed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                tools:text="1.0L"
+                android:visibility="invisible"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="11sp" />
 
-        <View
-            android:id="@+id/barWed"
-            android:layout_width="25dp"
-            android:layout_height="1dp"
-            android:background="#00AEEF" />
+            <View
+                android:id="@+id/barWed"
+                android:layout_width="25dp"
+                android:layout_height="1dp"
+                android:background="#00AEEF" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="Wed"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/progress_day_wed"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
-    </LinearLayout>
+        </LinearLayout>
 
-    <!-- Thứ Năm -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="vertical">
+        <!-- Thứ Năm -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/valueThu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            tools:text="0.6L"
-            android:visibility="invisible"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="11sp" />
+            <TextView
+                android:id="@+id/valueThu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                tools:text="0.6L"
+                android:visibility="invisible"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="11sp" />
 
-        <View
-            android:id="@+id/barThu"
-            android:layout_width="25dp"
-            android:layout_height="1dp"
-            android:background="#00AEEF" />
+            <View
+                android:id="@+id/barThu"
+                android:layout_width="25dp"
+                android:layout_height="1dp"
+                android:background="#00AEEF" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="Thu"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/progress_day_thu"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
-    </LinearLayout>
+        </LinearLayout>
 
-    <!-- Thứ Sáu -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="vertical">
+        <!-- Thứ Sáu -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/valueFri"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            tools:text="0.9L"
-            android:visibility="invisible"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="11sp" />
+            <TextView
+                android:id="@+id/valueFri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                tools:text="0.9L"
+                android:visibility="invisible"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="11sp" />
 
-        <View
-            android:id="@+id/barFri"
-            android:layout_width="25dp"
-            android:layout_height="1dp"
-            android:background="#00AEEF" />
+            <View
+                android:id="@+id/barFri"
+                android:layout_width="25dp"
+                android:layout_height="1dp"
+                android:background="#00AEEF" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="Fri"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/progress_day_fri"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
-    </LinearLayout>
+        </LinearLayout>
 
-    <!-- Thứ Bảy -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="vertical">
+        <!-- Thứ Bảy -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/valueSat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            tools:text="1.5L"
-            android:visibility="invisible"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="11sp" />
+            <TextView
+                android:id="@+id/valueSat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                tools:text="1.5L"
+                android:visibility="invisible"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="11sp" />
 
-        <View
-            android:id="@+id/barSat"
-            android:layout_width="25dp"
-            android:layout_height="1dp"
-            android:background="#00AEEF" />
+            <View
+                android:id="@+id/barSat"
+                android:layout_width="25dp"
+                android:layout_height="1dp"
+                android:background="#00AEEF" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="Sat"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/progress_day_sat"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
-    </LinearLayout>
+        </LinearLayout>
 
-    <!-- Chủ Nhật -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="vertical">
+        <!-- Chủ Nhật -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/valueSun"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            tools:text="1.6L"
-            android:visibility="invisible"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="11sp" />
+            <TextView
+                android:id="@+id/valueSun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                tools:text="1.6L"
+                android:visibility="invisible"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="11sp" />
 
-        <View
-            android:id="@+id/barSun"
-            android:layout_width="25dp"
-            android:layout_height="1dp"
-            android:background="#00AEEF" />
+            <View
+                android:id="@+id/barSun"
+                android:layout_width="25dp"
+                android:layout_height="1dp"
+                android:background="#00AEEF" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="Sun"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/progress_day_sun"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
-    </LinearLayout>
+        </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
 
 
     <!-- ProgressBar để hiển thị khi tải dữ liệu -->
-<ProgressBar
-android:id="@+id/progressBar"
-style="?android:attr/progressBarStyle"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:visibility="gone"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    tools:visibility="visible"/> <!-- tools:visibility để xem trong preview -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible"/>
 
 
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

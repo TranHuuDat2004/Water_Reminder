@@ -3,6 +3,7 @@ package com.example.canvas; // Thay bằng package của bạn
 // Import các lớp cần thiết
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 // import android.widget.EditText; // Không cần nữa
+import android.widget.Button;
 import android.widget.FrameLayout;
 // import android.widget.RadioButton; // Không cần nữa
 // import android.widget.RadioGroup;   // Không cần nữa
@@ -53,6 +55,8 @@ public class SettingsActivity extends NavigationActivity {
   private RelativeLayout layoutReminderSound;
   private RelativeLayout layoutLanguage;
 
+  private Button btnLogout; // <<< THÊM DÒNG NÀY
+
   // --- Firebase ---
   private FirebaseAuth mAuth;
   private FirebaseFirestore db;
@@ -75,7 +79,6 @@ public class SettingsActivity extends NavigationActivity {
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
-    loadLocale(); // Load ngôn ngữ (SharedPreferences) trước
     super.onCreate(savedInstanceState);
     setContentView(R.layout.settings); // Đảm bảo tên layout đúng là activity_settings.xml
 
@@ -121,12 +124,17 @@ public class SettingsActivity extends NavigationActivity {
 
     tvReminderSoundValue = findViewById(R.id.reminderSoundValue); // TextView giá trị Sound
     tvLanguageValue = findViewById(R.id.languageValue);          // TextView giá trị Language
+
+    btnLogout = findViewById(R.id.btnLogout); // <<< THÊM DÒNG NÀY (Đảm bảo ID trong XML là btnLogout)
   }
 
   private void setupListeners() {
     // Chỉ đặt listener cho các mục còn lại
     layoutReminderSound.setOnClickListener(v -> showSoundSelectionDialog());
     layoutLanguage.setOnClickListener(v -> showLanguageSelectionDialog());
+
+    btnLogout.setOnClickListener(v -> showLogoutConfirmationDialog()); // <<< THÊM DÒNG NÀY
+
   }
 
   // Load cài đặt từ Firestore (chỉ sound)
@@ -330,6 +338,42 @@ public class SettingsActivity extends NavigationActivity {
     SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     return prefs.getString(key, null);
   }
+
+  // --- THÊM PHƯƠNG THỨC XỬ LÝ LOGOUT ---
+  private void showLogoutConfirmationDialog() {
+    new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.logout_confirmation_title)) // Thêm string này
+            .setMessage(getString(R.string.logout_confirmation_message)) // Thêm string này
+            .setPositiveButton(getString(R.string.logout), (dialog, which) -> {
+              // Thực hiện đăng xuất
+              logoutUser();
+            })
+            .setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> {
+              // Người dùng hủy, không làm gì cả
+              dialog.dismiss();
+            })
+            .show();
+  }
+
+  private void logoutUser() {
+    mAuth.signOut(); // Đăng xuất khỏi Firebase Authentication
+    Log.i(TAG, "User logged out.");
+
+    // (Tùy chọn) Xóa dữ liệu SharedPreferences liên quan đến user nếu cần
+    // SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+    // prefs.edit().clear().apply(); // Xóa hết hoặc chỉ xóa key cụ thể
+
+    navigateToLogin(); // Điều hướng về màn hình Login
+  }
+
+  private void navigateToLogin() {
+    Intent intent = new Intent(SettingsActivity.this, LoginActivity.class); // Đảm bảo tên LoginActivity đúng
+    // Cờ để xóa hết các Activity trên stack và tạo LoginActivity làm Task mới
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    startActivity(intent);
+    finish(); // Đóng SettingsActivity
+  }
+  // --- KẾT THÚC PHẦN LOGOUT ---
 
   // --- Tiện ích ---
   private void showToast(String message) {
