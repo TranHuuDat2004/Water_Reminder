@@ -256,4 +256,49 @@
 
     <!-- General Error/Info Messages -->
     <string name="error_displaying_layout">Error displaying layout.</string>
+
+    <!-- ... other strings ... -->
+    <string name="change_password">Change Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="enter_current_password">Enter current password</string>
+    <string name="new_password">New Password</string>
+    <string name="enter_new_password_min_chars">Enter new password (min. 6 chars)</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="re_enter_new_password">Re-enter new password</string>
+    <string name="password_change_successful">Password changed successfully!</string>
+    <string name="password_change_failed">Password change failed: %s</string> <!-- %s for error message -->
+    <string name="passwords_do_not_match">New passwords do not match.</string>
+    <string name="password_too_short">New password must be at least 6 characters long.</string>
+    <string name="incorrect_current_password">Incorrect current password.</string>
+    <string name="re_authentication_failed">Re-authentication failed. Please try again.</string>
+    <string name="please_fill_all_fields">Please fill in all fields.</string>
+
+    <!-- Strings for ForgotPasswordValidateActivity -->
+    <string name="verify_your_account">Verify Your Account</string>
+    <string name="enter_username_and_phone_to_verify">Enter your registered username and phone number to verify your account.</string>
+    <string name="registered_username">Registered Username</string>
+    <string name="registered_phone_number">Registered Phone Number</string>
+    <string name="username_required">Username is required</string>
+    <string name="phone_required">Phone number is required</string>
+    <string name="verify_account">Verify Account</string>
+    <string name="verification_failed_check_info_username">Verification failed. Please check your username and phone number.</string>
+    <string name="account_verified_proceed_reset">Account verified! Proceed to reset password.</string>
+
+    <!-- Strings for ResetPasswordVerifiedActivity -->
+    <string name="set_new_password">Set New Password</string>
+    <string name="enter_your_new_password_below">Enter your new password below.</string>
+    <!-- Reuses "new_password", "confirm_new_password" from previous steps -->
+    <!-- Reuses "password_required", "confirm_password_required" if you add them -->
+    <!-- Reuses "password_too_short", "passwords_do_not_match" from previous steps -->
+    <string name="password_reset_success_simulation">Password reset simulated successfully. Please login with your new password.</string> <!-- Message for simulation -->
+    <!-- Reuses "reset_password" button text -->
+
+    <!-- General -->
+    <string name="email_required">Email is required</string>
+    <string name="invalid_email">Invalid email address</string>
+    <string name="password_required">Password is required</string>
+    <string name="confirm_password_required">Confirm password is required</string>
+    <string name="logout_successful">Logged out successfully</string>
+    <string name="reset_password">Reset Password</string>
+    <!-- Add any other missing strings if needed -->
 </resources>

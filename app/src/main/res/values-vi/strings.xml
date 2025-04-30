@@ -259,4 +259,49 @@
 
     <!-- General Error/Info Messages -->
     <string name="error_displaying_layout">Lỗi hiển thị giao diện.</string>
+
+    <!-- ... các chuỗi khác ... -->
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="current_password">Mật khẩu hiện tại</string>
+    <string name="enter_current_password">Nhập mật khẩu hiện tại</string>
+    <string name="new_password">Mật khẩu mới</string>
+    <string name="enter_new_password_min_chars">Nhập mật khẩu mới (tối thiểu 6 ký tự)</string>
+    <string name="confirm_new_password">Xác nhận mật khẩu mới</string>
+    <string name="re_enter_new_password">Nhập lại mật khẩu mới</string>
+    <string name="password_change_successful">Đổi mật khẩu thành công!</string>
+    <string name="password_change_failed">Đổi mật khẩu thất bại: %s</string> <!-- %s cho thông báo lỗi -->
+    <string name="passwords_do_not_match">Mật khẩu mới không khớp.</string>
+    <string name="password_too_short">Mật khẩu mới phải có ít nhất 6 ký tự.</string>
+    <string name="incorrect_current_password">Mật khẩu hiện tại không đúng.</string>
+    <string name="re_authentication_failed">Xác thực lại thất bại. Vui lòng thử lại.</string>
+    <string name="please_fill_all_fields">Vui lòng điền đầy đủ thông tin.</string>
+
+    <!-- Strings for ForgotPasswordValidateActivity -->
+    <string name="verify_your_account">Xác thực tài khoản</string>
+    <string name="enter_username_and_phone_to_verify">Nhập tên người dùng và số điện thoại đã đăng ký để xác thực tài khoản.</string>
+    <string name="registered_username">Tên người dùng đã đăng ký</string>
+    <string name="registered_phone_number">Số điện thoại đã đăng ký</string>
+    <string name="username_required">Vui lòng nhập tên người dùng</string>
+    <string name="phone_required">Vui lòng nhập số điện thoại</string>
+    <string name="verify_account">Xác thực tài khoản</string>
+    <string name="verification_failed_check_info_username">Xác thực thất bại. Vui lòng kiểm tra lại tên người dùng và số điện thoại.</string>
+    <string name="account_verified_proceed_reset">Tài khoản đã xác thực! Tiến hành đặt lại mật khẩu.</string>
+
+    <!-- Strings for ResetPasswordVerifiedActivity -->
+    <string name="set_new_password">Đặt mật khẩu mới</string>
+    <string name="enter_your_new_password_below">Nhập mật khẩu mới của bạn dưới đây.</string>
+    <!-- Sử dụng lại "new_password", "confirm_new_password" từ các bước trước -->
+    <!-- Sử dụng lại "password_required", "confirm_password_required" nếu bạn thêm vào -->
+    <!-- Sử dụng lại "password_too_short", "passwords_do_not_match" từ các bước trước -->
+    <string name="password_reset_success_simulation">Mô phỏng đặt lại mật khẩu thành công. Vui lòng đăng nhập bằng mật khẩu mới.</string> <!-- Thông báo mô phỏng -->
+    <!-- Sử dụng lại text nút "reset_password" -->
+
+    <!-- General -->
+    <string name="email_required">Vui lòng nhập email</string>
+    <string name="invalid_email">Địa chỉ email không hợp lệ</string>
+    <string name="password_required">Vui lòng nhập mật khẩu</string>
+    <string name="confirm_password_required">Vui lòng xác nhận mật khẩu</string>
+    <string name="logout_successful">Đăng xuất thành công</string>
+    <string name="reset_password">Đổi mật khẩu</string>
+    <!-- Thêm các chuỗi còn thiếu khác nếu cần -->
 </resources>

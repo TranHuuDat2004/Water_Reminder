@@ -81,14 +81,32 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnNext"
-        android:layout_width="200dp"
+        android:id="@+id/btnSkip"
+        android:layout_width="wrap_content"
+        android:minWidth="125dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="320dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#808080"
+        android:text="SKIP"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:minWidth="125dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#29B6F6"
-        android:layout_margin="40dp"
         android:text="NEXT"
         android:textColor="#FFFFFF"
         android:textSize="16sp"

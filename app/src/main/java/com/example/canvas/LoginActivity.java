@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
   private EditText etEmail, etPassword;
   private ImageView btnTogglePassword;
   private CheckBox cbRememberMe;
-  private Button btnLogin, btnGoogleLogin, btnFacebookLogin;
+  private Button btnLogin, btnGoogleLogin, btnFacebookLogin, btnForgotPassword;
 
   @Override
   public void onStart() {
@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
     btnClose = findViewById(R.id.btnClose);
     tvTitle = findViewById(R.id.tvTitle);
     tvSubtitle = findViewById(R.id.tvSubtitle);
-    tvForgotPassword = findViewById(R.id.tvForgotPassword);
     tvSignUp = findViewById(R.id.tvSignUp);
     etEmail = findViewById(R.id.etEmail);
     etPassword = findViewById(R.id.etPassword);
@@ -67,6 +66,12 @@ public class LoginActivity extends AppCompatActivity {
       }
     });
 
+    // Trong LoginActivity.java
+    Button btnForgotPassword = findViewById(R.id.btnForgotPassword);
+    btnForgotPassword.setOnClickListener(v -> {
+      Intent intent = new Intent(LoginActivity.this, ForgotPasswordValidateActivity.class); // Chuyển đến Activity xác thực
+      startActivity(intent);
+    });
     tvSignUp.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -98,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                           Toast.LENGTH_SHORT).show();
 
                   // Navigate to Started1Activity after successful login
-                  Intent intent = new Intent(LoginActivity.this, Started1Activity.class);
+                  Intent intent = new Intent(LoginActivity.this, StatusActivity.class);
                   intent.putExtra("userId", userId); // Pass the user ID to Started1Activity
                   startActivity(intent);
                   finish();

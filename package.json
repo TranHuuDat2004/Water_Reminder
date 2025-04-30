@@ -1,5 +1,29 @@
 {
+    "name": "Keeppley_Nodejs",
+    "version": "1.0.0",
+    "description": "Mình đang tập thiết kế giao diện ạ",
+    "main": "index.js",
+    "scripts": {
+      "start": "nodemon server.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/TranHuuDat2004/Keeppley_Nodejs.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/TranHuuDat2004/Keeppley_Nodejs/issues"
+    },
+    "homepage": "https://github.com/TranHuuDat2004/Keeppley_Nodejs#readme",
   "dependencies": {
-    "firebase-admin": "^13.3.0"
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.3.0",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.10",
+    "path": "^0.12.7"
   }
 }

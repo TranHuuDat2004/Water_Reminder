@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp.NoActionBar"> <!-- Changed this line -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".Started1Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,7 +60,7 @@
 
         </activity>
 
-        <activity android:name=".Started1Activity"
+        <activity android:name=".LoginActivity"
             android:exported="false"/>
         <activity android:name=".Started2Activity"
             android:exported="false"/>
@@ -72,6 +72,13 @@
             android:exported="false"/>
 
         <activity android:name=".ProgressActivity"
+            android:exported="false"/>
+
+
+        <activity android:name=".ResetPasswordVerifiedActivity"
+            android:exported="false"/>
+
+        <activity android:name=".ForgotPasswordValidateActivity"
             android:exported="false"/>
 
         <activity android:name=".EditProfileActivity"

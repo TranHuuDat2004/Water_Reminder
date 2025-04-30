@@ -153,7 +153,38 @@
                 app:tint="@color/gray"/>
         </RelativeLayout>
 
-        <!-- Thêm các cài đặt khác vào đây nếu cần -->
+        <!-- Change Password Setting -->
+        <RelativeLayout
+            android:id="@+id/changePasswordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/changePasswordLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/change_password"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
+
+
+            <ImageView
+                android:id="@+id/changePasswordArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_forward"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                app:tint="@color/gray"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

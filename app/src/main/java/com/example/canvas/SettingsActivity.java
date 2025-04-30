@@ -18,10 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 // import android.widget.EditText; // Không cần nữa
 import android.widget.Button;
+import android.widget.EditText;
+
+import android.widget.RelativeLayout; // Đảm bảo có import này
 import android.widget.FrameLayout;
 // import android.widget.RadioButton; // Không cần nữa
 // import android.widget.RadioGroup;   // Không cần nữa
-import android.widget.RelativeLayout;
+
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
@@ -32,7 +35,10 @@ import androidx.annotation.Nullable;
 import com.example.canvas.utils.SoundUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -49,13 +55,15 @@ public class SettingsActivity extends NavigationActivity {
 
   private static final String TAG = "SettingsActivity";
 
+  // --- THÊM KHAI BÁO VIEW MỚI ---
+  private RelativeLayout layoutChangePassword;
+  private Button btnLogout;
   // --- Views ---
   private TextView tvReminderSoundValue;
   private TextView tvLanguageValue;
   private RelativeLayout layoutReminderSound;
   private RelativeLayout layoutLanguage;
 
-  private Button btnLogout; // <<< THÊM DÒNG NÀY
 
   // --- Firebase ---
   private FirebaseAuth mAuth;
@@ -121,7 +129,7 @@ public class SettingsActivity extends NavigationActivity {
     // Chỉ ánh xạ các View còn lại
     layoutReminderSound = findViewById(R.id.reminderSoundLayout); // ID của RelativeLayout cha
     layoutLanguage = findViewById(R.id.languageLayout);
-
+    layoutChangePassword = findViewById(R.id.changePasswordLayout); // Quan trọng!
     tvReminderSoundValue = findViewById(R.id.reminderSoundValue); // TextView giá trị Sound
     tvLanguageValue = findViewById(R.id.languageValue);          // TextView giá trị Language
 
@@ -134,7 +142,13 @@ public class SettingsActivity extends NavigationActivity {
     layoutLanguage.setOnClickListener(v -> showLanguageSelectionDialog());
 
     btnLogout.setOnClickListener(v -> showLogoutConfirmationDialog()); // <<< THÊM DÒNG NÀY
-
+// --- THÊM LISTENER CHO LAYOUT ĐỔI MẬT KHẨU ---
+    if (layoutChangePassword != null) { // Kiểm tra null để tránh crash nếu ID sai
+      layoutChangePassword.setOnClickListener(v -> showChangePasswordDialog()); // Quan trọng!
+    } else {
+      Log.e(TAG, "Change Password Layout not found! Check ID R.id.changePasswordLayout in settings.xml");
+    }
+    // --- KẾT THÚC LISTENER ---
   }
 
   // Load cài đặt từ Firestore (chỉ sound)
@@ -374,6 +388,117 @@ public class SettingsActivity extends NavigationActivity {
     finish(); // Đóng SettingsActivity
   }
   // --- KẾT THÚC PHẦN LOGOUT ---
+
+
+  // ======================================================
+  // ===== PHẦN THÊM MỚI CHO ĐỔI MẬT KHẨU VÀ LOGOUT ======
+  // ======================================================
+
+  /**
+   * Hiển thị Dialog để người dùng nhập mật khẩu hiện tại và mật khẩu mới.
+   */
+  private void showChangePasswordDialog() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    LayoutInflater inflater = this.getLayoutInflater();
+    View dialogView = inflater.inflate(R.layout.dialog_change_password, null); // Dùng layout dialog đã tạo
+    builder.setView(dialogView);
+    builder.setTitle(R.string.change_password);
+
+    final EditText etCurrentPassword = dialogView.findViewById(R.id.etCurrentPassword);
+    final EditText etNewPassword = dialogView.findViewById(R.id.etNewPassword);
+    final EditText etConfirmNewPassword = dialogView.findViewById(R.id.etConfirmNewPassword);
+
+    builder.setPositiveButton(R.string.change_password, null); // Đặt null để override sau
+    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
+
+    final AlertDialog dialog = builder.create();
+    dialog.show();
+
+    // Override nút Positive để kiểm tra trước khi đóng
+    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+      String currentPassword = etCurrentPassword.getText().toString().trim();
+      String newPassword = etNewPassword.getText().toString().trim();
+      String confirmPassword = etConfirmNewPassword.getText().toString().trim();
+
+      // Validation
+      if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+        showToast(getString(R.string.please_fill_all_fields));
+        return;
+      }
+      if (newPassword.length() < 6) {
+        etNewPassword.setError(getString(R.string.password_too_short));
+        etNewPassword.requestFocus();
+        return;
+      }
+      if (!newPassword.equals(confirmPassword)) {
+        etConfirmNewPassword.setError(getString(R.string.passwords_do_not_match));
+        etConfirmNewPassword.requestFocus();
+        return;
+      }
+
+      // Nếu ổn, thực hiện đổi mật khẩu
+      handleChangePassword(currentPassword, newPassword, dialog);
+    });
+  }
+
+  /**
+   * Xử lý logic đổi mật khẩu bằng Firebase Auth.
+   * Yêu cầu xác thực lại người dùng trước.
+   *
+   * @param currentPassword Mật khẩu hiện tại người dùng nhập.
+   * @param newPassword     Mật khẩu mới người dùng nhập.
+   * @param dialog          Dialog đang hiển thị (để đóng khi thành công).
+   */
+  private void handleChangePassword(String currentPassword, String newPassword, final AlertDialog dialog) {
+    if (currentUser == null || currentUser.getEmail() == null) {
+      showToast("User session error.");
+      dialog.dismiss();
+      return;
+    }
+
+    // Bước 1: Xác thực lại
+    AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail(), currentPassword);
+
+    // (Optional) Hiển thị loading indicator
+    // setLoadingState(true);
+
+    currentUser.reauthenticate(credential)
+            .addOnCompleteListener(reauthTask -> {
+              if (reauthTask.isSuccessful()) {
+                // Bước 2: Đổi mật khẩu nếu xác thực lại thành công
+                currentUser.updatePassword(newPassword)
+                        .addOnCompleteListener(updateTask -> {
+                          // (Optional) Ẩn loading indicator
+                          // setLoadingState(false);
+                          if (updateTask.isSuccessful()) {
+                            showToast(getString(R.string.password_change_successful));
+                            dialog.dismiss(); // Đóng dialog
+                          } else {
+                            String errorMsg = updateTask.getException() != null ? updateTask.getException().getMessage() : "Update failed";
+                            showToast(String.format(getString(R.string.password_change_failed), errorMsg));
+                            Log.w(TAG, "Password update failed", updateTask.getException());
+                          }
+                        });
+              } else {
+                // (Optional) Ẩn loading indicator
+                // setLoadingState(false);
+                Log.w(TAG, "Re-authentication failed.", reauthTask.getException());
+                if (reauthTask.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                  // Sai mật khẩu hiện tại
+                  EditText etCurrent = dialog.findViewById(R.id.etCurrentPassword);
+                  if(etCurrent != null) {
+                    etCurrent.setError(getString(R.string.incorrect_current_password));
+                    etCurrent.requestFocus();
+                  } else {
+                    showToast(getString(R.string.incorrect_current_password));
+                  }
+                } else {
+                  // Lỗi xác thực lại khác
+                  showToast(getString(R.string.re_authentication_failed));
+                }
+              }
+            });
+  }
 
   // --- Tiện ích ---
   private void showToast(String message) {
